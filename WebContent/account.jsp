@@ -48,7 +48,11 @@
 				accountLookupQuery.close();
 				conn.close();
 				
-				out.println("Welcome, " + username);
+				out.print("Welcome, " + username);
+				out.print("<br>"
+						+ "<form method=get action=index.jsp>"
+						+ "<input type=\"submit\" value=\"Logout\">"
+						+ "</form>");
 				
 			}catch(Exception e){
 				out.print(e);
@@ -57,10 +61,5 @@
 			}
 		%>
 		
-		<br>
-		
-		<form method=get action=index.jsp>
-			<input type="submit" value="Logout">
-		</form>
 	</body>
 </html>
