@@ -18,11 +18,11 @@
 		
 		<!-- Login -->
 		<form method="post" action="account.jsp">
-			<label for="username"> Username: </label>
-			<input name="username" id="username" type="text">
+			<label for="unameLogin"> Username: </label>
+			<input name="username" id="unameLogin" type="text">
 			<br>
-			<label for="password"> Password: </label>
-			<input name="password" id="password" type="text">
+			<label for="passLogin"> Password: </label>
+			<input name="password" id="passLogin" type="text">
 			<br>
 			<input type="submit" value="Submit!">
 		</form>
@@ -34,11 +34,11 @@
 		
 		<!-- If no account setup, create one -->
 		<form method="post" action="accountCreated.jsp">
-			<label for="username"> Username: </label>
-			<input name="username" id="username" type="text">
+			<label for="unameCreate"> Username: </label>
+			<input name="username" id="unameCreate" type="text">
 			<br>
-			<label for="password"> Password: </label>
-			<input name="password" id="password" type="text">
+			<label for="passCreate"> Password: </label>
+			<input name="password" id="passCreate" type="text">
 			<br>
 			<input type="submit" value="Create Account!">
 		</form>
