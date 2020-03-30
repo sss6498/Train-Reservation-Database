@@ -59,6 +59,7 @@
 		
 		<br>
 		
+		<!-- For Monthly Sales Reports -->
 		<b><u> View Monthly Sales Reports</u></b>
 		<br>
 		<form method="post" action="salesReport.jsp">
@@ -70,6 +71,7 @@
 		
 		<br>
 		
+		<!-- Finding Reservations -->
 		<b><u> Find Reservations: </u></b>
 		<br>
 		<form method="post" action="findReservations.jsp">
@@ -103,7 +105,8 @@
 		</form>
 		
 		<br>
-		
+
+		<!-- Finding/Determining Revenue -->
 		<b><u> Determine Revenue Per: </u></b>
 		<form method="post" action="listRevenues.jsp">
 			<label for="trainLineRev"> Train Line Name: </label>

@@ -43,7 +43,7 @@
 					throw new Exception("Incorrect password!");
 				}
 				
-				//redirecting to admin account
+				//redirecting to admin account or customer account
 				if (username.equals("admin")){
 					RequestDispatcher rd = request.getRequestDispatcher("/adminAccount.jsp");
 					rd.forward(request, response);
