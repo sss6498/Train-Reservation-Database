@@ -43,16 +43,19 @@
 					throw new Exception("Incorrect password!");
 				}
 				
+				//redirecting to admin account
+				if (username.equals("admin")){
+					RequestDispatcher rd = request.getRequestDispatcher("/adminAccount.jsp");
+					rd.forward(request, response);
+				}else{
+					RequestDispatcher rd = request.getRequestDispatcher("/customerAccount.jsp");
+					rd.forward(request, response);
+				}
+				
 				//closing all objects
 				result.close();
 				accountLookupQuery.close();
 				conn.close();
-				
-				out.print("Welcome, " + username);
-				out.print("<br>"
-						+ "<form method=get action=index.jsp>"
-						+ "<input type=\"submit\" value=\"Logout\">"
-						+ "</form>");
 				
 			}catch(Exception e){
 				out.print(e);

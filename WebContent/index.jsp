@@ -8,7 +8,7 @@
 	</head>
 	<body>
 		<b>
-		Welcome to the Group 31's Railway Booking System
+		Welcome to the Group 31's Railway Booking System!
 		</b>
 		<br>
 		<br>
