@@ -33,10 +33,17 @@
 		<br>
 		
 		<form method="post" action="employeeInfo.jsp">
+			<label for="employeeAction"> Choose an action: </label>
+			<select name="employeeAction" id="employeeAction">
+				<option value="Create An Account"> Create An Account </option>
+				<option value="Edit An Account"> Edit An Account </option>
+				<option value="Delete An Account"> Delete An Account </option>
+			</select>
+			<br>
 			<label for="ssn"> SSN: (without dashes)</label>
 			<input name="ssn" maxlength="9" id="ssn" type="text">
 			<br>
-			<input type="submit" value="Find Employee!">
+			<input type="submit" value="Execute Action!">
 		</form>
 		
 		<br>
@@ -45,6 +52,13 @@
 		<b><u> Add, Edit, or Delete Information for an Customer</u></b>
 		<br>
 		<form method="post" action="customerInfo.jsp">
+			<label for="customerAction"> Choose an action: </label>
+			<select name="customerAction" id="customerAction">
+				<option value="Create An Account"> Create An Account </option>
+				<option value="Edit An Account"> Edit An Account </option>
+				<option value="Delete An Account"> Delete An Account </option>
+			</select>
+			<br>
 			<label for="custFirstName"> First Name: </label>
 			<input name="custFirstName" id="custFirstName" type="text">
 			<br>
@@ -54,7 +68,7 @@
 			<label for="custEmail"> Email:  </label>
 			<input name="custEmail" id="custEmail" type="text">
 			<br>
-			<input type="submit" value="Find Customer!">
+			<input type="submit" value="Execute Action!">
 		</form>
 		
 		<br>

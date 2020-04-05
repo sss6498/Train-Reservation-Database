@@ -24,6 +24,11 @@
 				String username = request.getParameter("username");
 				String password = request.getParameter("password");
 				
+				//Don't allow blank usernames
+				if (username.equals("")){
+					throw new Exception("Username cannot be blank!");
+				}
+				
 				//Looking up the account in the database
 				String insertAccountInfoStr = "INSERT INTO account (username, password) "
 										+ "VALUES (?, ?)";
@@ -43,7 +48,7 @@
 				
 				
 			}catch(Exception e){
-				out.print(e);
+				out.print(e.getMessage());
 				out.print("<br>");
 				out.print("Your account was unable to be created.");
 			}

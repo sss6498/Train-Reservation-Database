@@ -12,7 +12,7 @@
 	<body>
 		<%
 			try{
-				//The url of our databse
+				//The url of our database
 				String url = "jdbc:mysql://mydb.cqqcfvqve8mb.us-east-2.rds.amazonaws.com:3306/cs336RailwayBookingSystem";
 				
 				Class.forName("com.mysql.jdbc.Driver");
@@ -44,6 +44,8 @@
 				}
 				
 				//redirecting to admin account or customer account
+				//TODO add one more condition to this for employee Accounts
+				//TODO (continued), could just make new form for employee accounts, in that case throw admin onto there
 				if (username.equals("admin")){
 					RequestDispatcher rd = request.getRequestDispatcher("/adminAccount.jsp");
 					rd.forward(request, response);
