@@ -43,18 +43,37 @@
 					throw new Exception("Incorrect password!");
 				}
 				
+				//Checking if it is an employee account
+				boolean employeeAccount = false;
+				
+				String checkEmplAccStr = "SELECT * "
+						+ "FROM employee e "
+						+ "WHERE e.username=?";
+				
+				PreparedStatement checkEmplAccQuery = conn.prepareStatement(checkEmplAccStr);
+				checkEmplAccQuery.setString(1, username);
+				
+				ResultSet checkEmplAccRes = checkEmplAccQuery.executeQuery();
+				
+				if (checkEmplAccRes.next() == true){
+					employeeAccount = true;
+				}
+				
 				//redirecting to admin account or customer account
-				//TODO add one more condition to this for employee Accounts
-				//TODO (continued), could just make new form for employee accounts, in that case throw admin onto there
 				if (username.equals("admin")){
 					RequestDispatcher rd = request.getRequestDispatcher("/adminAccount.jsp");
 					rd.forward(request, response);
-				}else{
+				}else if (employeeAccount == true){
+					RequestDispatcher rd = request.getRequestDispatcher("/employeeAccount.jsp");
+					rd.forward(request, response);
+				}else {
 					RequestDispatcher rd = request.getRequestDispatcher("/customerAccount.jsp");
 					rd.forward(request, response);
 				}
 				
 				//closing all objects
+				checkEmplAccRes.close();
+				checkEmplAccQuery.close();
 				result.close();
 				accountLookupQuery.close();
 				conn.close();

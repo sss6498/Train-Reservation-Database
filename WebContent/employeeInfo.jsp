@@ -11,14 +11,13 @@
 	</head>
 	<body>
 		<% 
+			String empSsn = null;
+			String empFirstName = null;
+			String empLastName = null;
+			String empUsername = null;
+			String empPassword = null;
+			
 			try{
-				//account status 0 means create, 1 means edit, 2 means delete
-				int accountStatus;
-				String empSsn;
-				String empFirstName;
-				String empLastName;
-				String empUsername;
-				
 				//The url of our database
 				String url = "jdbc:mysql://mydb.cqqcfvqve8mb.us-east-2.rds.amazonaws.com:3306/cs336RailwayBookingSystem";
 				
@@ -37,14 +36,29 @@
 				}
 				
 				if (employeeAction.equals("Create An Account")){
-					accountStatus = 0;
-					out.print("Fill out all the remaining feilds");
+					
+					//throw an error if ssn is not 9 digits
+					if (empSsn.length() != 9){
+						throw new Exception("SSN needs to be 9 digits long!");
+					}
+					
+					//creating new employee account
+					String createEmpAccountStr = "INSERT INTO employee(ssn)" 
+							+ "VALUES (?)";
+					PreparedStatement createEmpAccountAct = conn.prepareStatement(createEmpAccountStr);
+					createEmpAccountAct.setString(1, empSsn);
+					createEmpAccountAct.executeUpdate();
+					createEmpAccountAct.close();
+					
+					out.print("Employee Successfully Created! <br><br>");
+					out.print("Fill out the relevant fields below and submit to finish creating account!");
+					
 				}else if (employeeAction.equals("Edit An Account")){
-					accountStatus = 1;
-					//c
+					
+					out.print("Edit the relevant fields below and submit!");
+					
 				}else{
 					//can just have query to delete account
-					accountStatus = 2;
 					
 					//getting the username of the employee
 					String getUsername = "SELECT e.username " 
@@ -82,7 +96,48 @@
 					empDeleteQuery.close();
 					accountDeleteQuery.close();
 				}
+				
+				//populating employee fields
+				String findEmployeeStr = "SELECT * "
+						+ "FROM employee e "
+						+ "WHERE e.ssn=?";
+				PreparedStatement findEmployeeQuery = conn.prepareStatement(findEmployeeStr);
+				findEmployeeQuery.setString(1, empSsn);
+				ResultSet findEmployeeRes = findEmployeeQuery.executeQuery();
 
+				if (findEmployeeRes.next() == false){
+					throw new Exception("Employee not found!");
+				}else{
+					empSsn = findEmployeeRes.getString("ssn");
+					empFirstName = findEmployeeRes.getString("name_first");
+					empLastName = findEmployeeRes.getString("name_last");
+					empUsername = findEmployeeRes.getString("username");
+				}
+				
+				findEmployeeQuery.close();
+				findEmployeeRes.close();
+				
+				//getting employee password for account
+				if (empUsername != null){
+					String findEmployeeAccStr = "SELECT * "
+							+ "FROM account a "
+							+ "WHERE a.username=?";
+					PreparedStatement findEmployeeAccQuery = conn.prepareStatement(findEmployeeAccStr);
+					findEmployeeAccQuery.setString(1, empUsername);
+					ResultSet findEmployeeAccRes = findEmployeeAccQuery.executeQuery();
+					findEmployeeAccRes.next();
+					empPassword = findEmployeeAccRes.getString("password");
+					findEmployeeAccQuery.close();
+					findEmployeeAccRes.close();
+				}
+				
+				//putting variables in session
+				session.setAttribute("empSsn", empSsn);
+				session.setAttribute("empFirstName", empFirstName);
+				session.setAttribute("empLastName", empLastName);
+				session.setAttribute("empUsername", empUsername);
+				session.setAttribute("empPassword", empPassword);
+				
 				//closing the connection
 				conn.close();
 			}catch(Exception e){
@@ -91,5 +146,43 @@
 				rd.forward(request, response);
 			}
 		%>
+		
+		<br>
+		<br>
+		
+		<form method="post" action="processEmployeeUpdate.jsp">
+			<label for="empSSN"> SSN: (without dashes)</label>
+			<input name="empSSN" maxlength="9" id="empSSN" type="text" value=<% 
+				String tmp = empSsn != null? empSsn:"";
+				out.print(tmp);
+			%>>
+			<br>
+			<label for="empFirstName"> Employee First Name: </label>
+			<input name="empFirstName" id="empFirstName" type="text" value=<%
+				tmp = empFirstName != null? empFirstName:"";
+				out.print(tmp);
+			%>>
+			<br>
+			<label for="empLastName"> Employee Last Name: </label>
+			<input name="empLastName" id="empLastName" type="text" value=<%
+				tmp = empLastName != null? empLastName:"";
+				out.print(tmp);
+			%>>
+			<br>
+			<label for="empAccountUsername"> Employee Account Username: </label>
+			<input name="empAccountUsername" id="empAccountUsername" type="text" value=<%
+				tmp = empUsername != null? empUsername:"";
+				out.print(tmp);
+			%>>
+			<br>
+			<label for="empAccountPassword"> Employee Account Password: </label>
+			<input name="empAccountPassword" id="empAccountPassword" type="text" value=<%
+				tmp = empPassword != null? empPassword:"";
+				out.print(tmp);
+			%>>
+			<br>
+			<input type="submit" value="Update!">
+		</form>
+		
 	</body>
 </html>

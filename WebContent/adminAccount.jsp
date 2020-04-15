@@ -12,10 +12,13 @@
 	<body>
 		Welcome, Administrator!
 		
-		<br>
+		<form method="get" action="index.jsp">
+			<input type="submit" value="Logout!">
+		</form>
+
 		<br>
 		
-		<b><u> Best 5 Customers!</u></b>
+		<b><u> Best Customer!</u></b>
 		<!--  Logic needs to be inserted-->
 		
 		<br>
@@ -31,7 +34,7 @@
 		<b><u> Add, Edit, or Delete Information for an Employee</u></b>
 		
 		<br>
-		
+
 		<form method="post" action="employeeInfo.jsp">
 			<label for="employeeAction"> Choose an action: </label>
 			<select name="employeeAction" id="employeeAction">

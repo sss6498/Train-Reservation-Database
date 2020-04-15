@@ -15,7 +15,7 @@
 		<u>
 		Login:
 		</u>
-		
+
 		<!-- Login -->
 		<form method="post" action="account.jsp">
 			<label for="unameLogin"> Username: </label>
