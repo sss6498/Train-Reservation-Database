@@ -10,5 +10,12 @@
 		<%
 			out.print(request.getAttribute("status"));
 		%>
+		
+		<br>
+		<br>
+		
+		<form method="post" action="adminAccount.jsp">
+			<input type="submit" value="Go back to Account!">
+		</form>
 	</body>
 </html>

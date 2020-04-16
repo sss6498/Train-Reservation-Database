@@ -42,11 +42,21 @@
 						throw new Exception("SSN needs to be 9 digits long!");
 					}
 					
+					//create a blank a blank tmp account for employee
+					String createAccStr = "INSERT INTO account(username, password) "
+							+ "VALUES (?, ?)";
+					PreparedStatement createAccQuery = conn.prepareStatement(createAccStr);
+					createAccQuery.setString(1, "");
+					createAccQuery.setString(2, "");
+					createAccQuery.executeUpdate();
+					createAccQuery.close();
+					
 					//creating new employee account
-					String createEmpAccountStr = "INSERT INTO employee(ssn)" 
-							+ "VALUES (?)";
+					String createEmpAccountStr = "INSERT INTO employee(ssn, username) " 
+							+ "VALUES (?, ?)";
 					PreparedStatement createEmpAccountAct = conn.prepareStatement(createEmpAccountStr);
 					createEmpAccountAct.setString(1, empSsn);
+					createEmpAccountAct.setString(2, "");
 					createEmpAccountAct.executeUpdate();
 					createEmpAccountAct.close();
 					
@@ -72,14 +82,7 @@
 					rs.next();
 					empUsername = rs.getString("username");
 					
-					//deleteing employee
-  					String empDeleteStr = "DELETE FROM employee "
-							+ "WHERE employee.ssn=?";
-					PreparedStatement empDeleteQuery = conn.prepareStatement(empDeleteStr);
-					empDeleteQuery.setString(1, empSsn);
-					empDeleteQuery.executeUpdate();  
-					
-					//deleteing employee account
+					//deleteing employee account which deleted employee on cascade
    					String accountDeleteStr = "DELETE FROM account "
 							+ "WHERE account.username=?";
 					PreparedStatement accountDeleteQuery = conn.prepareStatement(accountDeleteStr);
@@ -93,8 +96,8 @@
 					
 					//closing everything
 					rs.close();
-					empDeleteQuery.close();
 					accountDeleteQuery.close();
+					return;
 				}
 				
 				//populating employee fields
@@ -118,18 +121,16 @@
 				findEmployeeRes.close();
 				
 				//getting employee password for account
-				if (empUsername != null){
-					String findEmployeeAccStr = "SELECT * "
-							+ "FROM account a "
-							+ "WHERE a.username=?";
-					PreparedStatement findEmployeeAccQuery = conn.prepareStatement(findEmployeeAccStr);
-					findEmployeeAccQuery.setString(1, empUsername);
-					ResultSet findEmployeeAccRes = findEmployeeAccQuery.executeQuery();
-					findEmployeeAccRes.next();
-					empPassword = findEmployeeAccRes.getString("password");
-					findEmployeeAccQuery.close();
-					findEmployeeAccRes.close();
-				}
+				String findEmployeeAccStr = "SELECT * "
+						+ "FROM account a "
+						+ "WHERE a.username=?";
+				PreparedStatement findEmployeeAccQuery = conn.prepareStatement(findEmployeeAccStr);
+				findEmployeeAccQuery.setString(1, empUsername);
+				ResultSet findEmployeeAccRes = findEmployeeAccQuery.executeQuery();
+				findEmployeeAccRes.next();
+				empPassword = findEmployeeAccRes.getString("password");
+				findEmployeeAccQuery.close();
+				findEmployeeAccRes.close();
 				
 				//putting variables in session
 				session.setAttribute("empSsn", empSsn);
@@ -152,34 +153,34 @@
 		
 		<form method="post" action="processEmployeeUpdate.jsp">
 			<label for="empSSN"> SSN: (without dashes)</label>
-			<input name="empSSN" maxlength="9" id="empSSN" type="text" value=<% 
+			<input name="empSSN" maxlength="9" id="empSSN" type="text" value="<% 
 				String tmp = empSsn != null? empSsn:"";
 				out.print(tmp);
-			%>>
+			%>">
 			<br>
 			<label for="empFirstName"> Employee First Name: </label>
-			<input name="empFirstName" id="empFirstName" type="text" value=<%
+			<input name="empFirstName" id="empFirstName" type="text" value="<%
 				tmp = empFirstName != null? empFirstName:"";
 				out.print(tmp);
-			%>>
+			%>">
 			<br>
 			<label for="empLastName"> Employee Last Name: </label>
-			<input name="empLastName" id="empLastName" type="text" value=<%
+			<input name="empLastName" id="empLastName" type="text" value="<%
 				tmp = empLastName != null? empLastName:"";
 				out.print(tmp);
-			%>>
+			%>">
 			<br>
 			<label for="empAccountUsername"> Employee Account Username: </label>
-			<input name="empAccountUsername" id="empAccountUsername" type="text" value=<%
+			<input name="empAccountUsername" id="empAccountUsername" type="text" value="<%
 				tmp = empUsername != null? empUsername:"";
 				out.print(tmp);
-			%>>
+			%>">
 			<br>
 			<label for="empAccountPassword"> Employee Account Password: </label>
-			<input name="empAccountPassword" id="empAccountPassword" type="text" value=<%
+			<input name="empAccountPassword" id="empAccountPassword" type="text" value="<%
 				tmp = empPassword != null? empPassword:"";
 				out.print(tmp);
-			%>>
+			%>">
 			<br>
 			<input type="submit" value="Update!">
 		</form>
