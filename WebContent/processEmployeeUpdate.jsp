@@ -14,7 +14,7 @@
 			try {
 				//reading in old and new parameters
 				String oldEmpSsn = session.getAttribute("empSsn").toString();
-				Object oldEmpUsernameObj = session.getAttribute("empUsername");
+				String oldEmpUsername = session.getAttribute("empUsername").toString();
 				String empSsn = request.getParameter("empSSN");
 				String empFirstName = request.getParameter("empFirstName");
 				String empLastName = request.getParameter("empLastName");
