@@ -20,9 +20,44 @@
 		
 		<b><u> Best Customer!</u></b>
 		<!--  Logic needs to be inserted-->
+			<ul>
+			<% 
+				//The url of our database
+				String url = "jdbc:mysql://mydb.cqqcfvqve8mb.us-east-2.rds.amazonaws.com:3306/cs336RailwayBookingSystem";
+				
+				Class.forName("com.mysql.jdbc.Driver");
+				
+				//Attempting to make a connection to database
+				Connection conn = DriverManager.getConnection(url, "group31", "database20");
+				
+				String bestCustomerStr = 
+						"SELECT c.name_first, c.name_last, t1.money "
+						+ "FROM customer c, "
+						+ "(SELECT *, SUM(r.total_fare) money "
+						+ "FROM reservation r "
+						+ "GROUP BY r.username) t1 "
+						+ "WHERE t1.money = (SELECT MAX(t1.maxMoney) "
+						+	"FROM (SELECT SUM(r.total_fare) maxMoney "
+						+		"FROM reservation r "
+						+		"GROUP BY r.username) t1) "
+						+ "AND c.username=t1.username";
+				
+				Statement bestCustomerQuery = conn.createStatement();
+				ResultSet bestCustomerRes = bestCustomerQuery.executeQuery(bestCustomerStr);
+				
+				if (bestCustomerRes.next() != false){
+					String firstName = bestCustomerRes.getString("name_first");
+					String lastName = bestCustomerRes.getString("name_last");
+					out.print("<li>" + firstName + " " + lastName + "</li>");
+				}
+				
+				//closing everything used
+				bestCustomerQuery.close();
+				bestCustomerRes.close();
+				conn.close();
+			%>
+			</ul>
 		
-		<br>
-		<br>
 		
 		<b><u> Top 5 Most Active Transit Lines!</u></b>
 		<!--  Logic needs to be inserted-->
