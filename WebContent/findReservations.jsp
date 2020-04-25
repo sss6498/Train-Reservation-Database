@@ -26,7 +26,6 @@
 	</head>
 	<body>
 	
-		<h1><u> Reservations </u></h1>
 		<%
 		try{
 			//getting info from admin page
@@ -44,10 +43,12 @@
 				if (resFirstName.equals("") || resLastName.equals("") || resEmail.equals("")){
 					throw new Exception("First name, Last Name, or Email cannot be blank!");
 				}
+				out.print("<h1><u> Reservations for " + resFirstName + " " + resLastName + "</u></h1>");
 			}else{
 				if (trainLineRes.equals("") || trainNumRes.equals("")){
 					throw new Exception("Train Line Name or Train Number cannot be blank!");
 				}
+				out.print("<h1><u> Reservations for " + trainLineRes + " #" + trainNumRes + "</u></h1>");
 			}
 			
 			//The url of our database

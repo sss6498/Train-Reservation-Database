@@ -25,7 +25,6 @@
 		</style>
 	</head>
 	<body>
-		<h1> <u> Sales Report </u> </h1>
 		
 		<%
 		try{
@@ -37,6 +36,8 @@
 			if (yearSelected.equals("")){
 				throw new Exception("No year entered!");
 			}
+			
+			out.print("<h1> <u> Sales Report for " + monthSelected + "/" + yearSelected + "</u> </h1>");
 			
 			//The url of our database
 			String url = "jdbc:mysql://mydb.cqqcfvqve8mb.us-east-2.rds.amazonaws.com:3306/cs336RailwayBookingSystem";
