@@ -42,6 +42,14 @@
 						throw new Exception("SSN needs to be 9 digits long!");
 					}
 					
+					//delete any accounts that are "" in preparation for the next step
+					String deleteEmptyAccStr = "DELETE FROM account "
+							+ "WHERE account.username=?";
+					PreparedStatement deleteEmptyAccQuery = conn.prepareStatement(deleteEmptyAccStr);
+					deleteEmptyAccQuery.setString(1, "");
+					deleteEmptyAccQuery.executeUpdate();
+					deleteEmptyAccQuery.close();
+					
 					//create a blank a blank tmp account for employee
 					String createAccStr = "INSERT INTO account(username, password) "
 							+ "VALUES (?, ?)";

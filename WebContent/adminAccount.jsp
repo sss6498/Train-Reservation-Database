@@ -116,7 +116,23 @@
 		<br>
 		<form method="post" action="salesReport.jsp">
 			<label for="salesMonth"> Month: </label>
-			<input name="salesMonth" id="salesMonth" type="text">
+			<select name="salesMonth" id="salesMonth">
+				<option value="01"> January </option>
+				<option value="02"> February </option>
+				<option value="03"> March </option>
+				<option value="04"> April </option>
+				<option value="05"> May </option>
+				<option value="06"> June </option>
+				<option value="07"> July </option>
+				<option value="08"> August </option>
+				<option value="09"> September </option>
+				<option value="10"> October </option>
+				<option value="11"> November </option>
+				<option value="12"> December </option>
+			</select>
+			<br>
+			<label for="salesYear"> Year: </label>
+			<input name="salesYear" id="salesYear" type="text">
 			<br>
 			<input type="submit" value="Submit!">
 		</form>
@@ -143,7 +159,7 @@
 		<br>
 		<br>
 		
-		<form method="post" action="listReservations.jsp">
+		<form method="post" action="findReservations.jsp">
 			<label for="resFirst"> Customer First Name: </label>
 			<input name="resFirst" id="resFirst" type="text">
 			<br>
