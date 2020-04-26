@@ -25,7 +25,6 @@
 		Search for train schedule reservations:
 		<label for="origin">Origin:</label>
 		<select id="origin" name="origin">
-		  <option value="s.name">ALL</option>
 		  <option value="Trenton">Trenton</option>
 		  <option value="Newark">Newark</option>
 		  <option value="Philadelphia 30th Street">Philadelphia 30th Street</option>	
@@ -34,7 +33,6 @@
 		
 		<label for="destination">Destination:</label>
 		<select id="destination" name="destination">
-		  <option value="s.name">ALL</option>
 		  <option value="Trenton">Trenton</option>
 		  <option value="Newark">Newark</option>
 		  <option value="Philadelphia 30th Street">Philadelphia 30th Street</option>	
