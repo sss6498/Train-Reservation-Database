@@ -147,5 +147,10 @@
 		
 		%>
 		
+		<br>
+		<form method="post" action="adminAccount.jsp">
+			<input type="submit" value="Go back to Account!">
+		</form>
+		
 	</body>
 </html>

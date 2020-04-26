@@ -167,25 +167,25 @@
 			%>">
 			<br>
 			<label for="empFirstName"> Employee First Name: </label>
-			<input name="empFirstName" id="empFirstName" type="text" value="<%
+			<input name="empFirstName" maxlength="30" id="empFirstName" type="text" value="<%
 				tmp = empFirstName != null? empFirstName:"";
 				out.print(tmp);
 			%>">
 			<br>
 			<label for="empLastName"> Employee Last Name: </label>
-			<input name="empLastName" id="empLastName" type="text" value="<%
+			<input name="empLastName" maxlength="30" id="empLastName" type="text" value="<%
 				tmp = empLastName != null? empLastName:"";
 				out.print(tmp);
 			%>">
 			<br>
 			<label for="empAccountUsername"> Employee Account Username: </label>
-			<input name="empAccountUsername" id="empAccountUsername" type="text" value="<%
+			<input name="empAccountUsername" maxlength="20" id="empAccountUsername" type="text" value="<%
 				tmp = empUsername != null? empUsername:"";
 				out.print(tmp);
 			%>">
 			<br>
 			<label for="empAccountPassword"> Employee Account Password: </label>
-			<input name="empAccountPassword" id="empAccountPassword" type="text" value="<%
+			<input name="empAccountPassword" maxlength="20" id="empAccountPassword" type="text" value="<%
 				tmp = empPassword != null? empPassword:"";
 				out.print(tmp);
 			%>">

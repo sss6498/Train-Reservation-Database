@@ -103,9 +103,13 @@
 			
 			//calculating total revenue
 			String totalRevStr = "SELECT SUM(r.total_fare) totalRev "
-					+ "FROM reservation r";
-			Statement totalRevQuery = conn.createStatement();
-			ResultSet totalRevRes = totalRevQuery.executeQuery(totalRevStr);
+					+ "FROM reservation r "
+					+ "WHERE MONTH(r.date)=? "
+					+ "AND YEAR(r.date)=?";
+			PreparedStatement totalRevQuery = conn.prepareStatement(totalRevStr);
+			totalRevQuery.setString(1, monthSelected);
+			totalRevQuery.setString(2, yearSelected);
+			ResultSet totalRevRes = totalRevQuery.executeQuery();
 			
 			totalRevRes.next();
 			
@@ -126,6 +130,11 @@
 		
 		%>
 		
+		<br>
+		<br>
+		<form method="post" action="adminAccount.jsp">
+			<input type="submit" value="Go back to Account!">
+		</form>
 		
 	</body>
 </html>
