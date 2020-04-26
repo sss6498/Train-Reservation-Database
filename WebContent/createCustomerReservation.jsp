@@ -24,20 +24,32 @@
 				String username = request.getParameter("username");
 				String totalFare = request.getParameter("total_fare");
 				String date = request.getParameter("date");
-				String seatClass = request.getParameter("class");
+				String seatClass = request.getParameter("seatClass");
 				
+				String resIDMakeStr = "SELECT MAX(r.reservation_id)"
+						+ "FROM reservation r;";
+						
+				PreparedStatement resIDMakeQuery = conn.prepareStatement(resIDMakeStr);
 				
-				//TO-DO:
-					//Make it so that booking fee and seat number are properly assigned. Total fare may need to be fixed too.
+				ResultSet rs = resIDMakeQuery.executeQuery();
+				
+				String newResID = "";
+				
+				while (rs.next())
+					newResID = rs.getString(1);
+				
+				int temp = Integer.parseInt(newResID) + 1;
+				
+				newResID = Integer.toString(temp);
+		
 				
 				//Looking up the account in the database
 				String createResInfoStr = "INSERT INTO reservation(reservation_id, total_fare, date, class, seat_num, booking_fee, username) "
-						+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
-
+						+ "VALUES (?, ?, ?, ?, ?, ?, ?);";
 				
 				PreparedStatement createResInfoQuery = conn.prepareStatement(createResInfoStr);
 				
-				createResInfoQuery.setString(1, );
+				createResInfoQuery.setString(1, newResID);
 				createResInfoQuery.setString(2, totalFare);
 				createResInfoQuery.setString(3, date);
 				createResInfoQuery.setString(4, seatClass);

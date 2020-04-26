@@ -24,28 +24,26 @@
 	<form action="trainschedule.jsp">
 		Search for train schedule reservations:
 		<label for="origin">Origin:</label>
-		<select id="origin" name="origin">
+		<select id="origin">
+		  <option value="f.origin_id">ALL</option>
 		  <option value="Trenton">Trenton</option>
-		  <option value="Newark">Newark</option>
 		  <option value="Philadelphia 30th Street">Philadelphia 30th Street</option>	
-		  <option value="Atlantic City">Atlantic City</option>		
 		</select>
 		
 		<label for="destination">Destination:</label>
-		<select id="destination" name="destination">
-		  <option value="Trenton">Trenton</option>
+		<select id="destination">
+		  <option value="s.name">ALL</option>
 		  <option value="Newark">Newark</option>
-		  <option value="Philadelphia 30th Street">Philadelphia 30th Street</option>	
 		  <option value="Atlantic City">Atlantic City</option>	
 		</select>
 		<label for="date">Date of Travel(yyyy-mm-dd):</label>
 		  <input type="text" id="date" name="date">	
 		<label for="sortby">Sort By:</label>
-		<select id="sortby" name="sortby">
+		<select id="sortby">
 		  <option value="f.arrival_time">Arrival Time</option>
 		  <option value="f.departure_time">Departure Time</option>
 		  <option value="f.origin_id">Origin</option>	
-		  <option value="s.name">Destination</option>
+		  <option value="s.name">Station Name</option>
 		  <option value="r.total_fare">Total Fare</option>
 		</select>
 		<input type="submit" value="Submit">
@@ -67,18 +65,14 @@
 		<select id="origin">
 		  <option value="f.origin_id">ALL</option>
 		  <option value="Trenton">Trenton</option>
-		  <option value="Newark">Newark</option>
 		  <option value="Philadelphia 30th Street">Philadelphia 30th Street</option>	
-		  <option value="Atlantic City">Atlantic City</option>	
 		</select>
 		
 		<label for="destination">Destination:</label>
 		<select id="destination">
 		  <option value="s.name">ALL</option>
-		  <option value="Trenton">Trenton</option>
 		  <option value="Newark">Newark</option>
-		  <option value="Philadelphia 30th Street">Philadelphia 30th Street</option>	
-		  <option value="Atlantic City">Atlantic City</option>
+		  <option value="Atlantic City">Atlantic City</option>	
 		</select>
 		<label for="date">Date of Travel(yyyy-mm-dd):</label>
 		  <input type="text" id="date" name="date">	
