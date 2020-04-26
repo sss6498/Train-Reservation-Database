@@ -180,61 +180,61 @@
 		
 		<form method="post" action="processCustomerUpdate.jsp">
 			<label for="custEmail"> Customer Email: </label>
-			<input name="custEmail" id="custEmail" type="text" value="<% 
+			<input name="custEmail" maxlength="30" id="custEmail" type="text" value="<% 
 				String tmp = custEmail != null? custEmail:"";
 				out.print(tmp);
 			%>">
 			<br>
 			<label for="custFirstName"> Customer First Name: </label>
-			<input name="custFirstName" id="custFirstName" type="text" value="<%
+			<input name="custFirstName" maxlength="30" id="custFirstName" type="text" value="<%
 				tmp = custFirstName != null? custFirstName:"";
 				out.print(tmp);
 			%>">
 			<br>
 			<label for="custLastName"> Customer Last Name: </label>
-			<input name="custLastName" id="custLastName" type="text" value="<%
+			<input name="custLastName" maxlength="30" id="custLastName" type="text" value="<%
 				tmp = custLastName != null? custLastName:"";
 				out.print(tmp);
 			%>">
 			<br>
 			<label for="custAddress"> Customer Address: </label>
-			<input name="custAddress" id="custAddress" type="text" value="<%
+			<input name="custAddress" maxlength="30" id="custAddress" type="text" value="<%
 				tmp = custAddress != null? custAddress:"";
 				out.print(tmp);
 			%>">
 			<br>
 			<label for="custCity"> Customer City: </label>
-			<input name="custCity" id="custCity" type="text" value="<%
+			<input name="custCity" maxlength="30" id="custCity" type="text" value="<%
 				tmp = custCity != null? custCity:"";
 				out.print(tmp);
 			%>">
 			<br>
 			<label for="custState"> Customer State: </label>
-			<input name="custState" id="custState" type="text" value="<%
+			<input name="custState" maxlength="30" id="custState" type="text" value="<%
 				tmp = custState != null? custState:"";
 				out.print(tmp);
 			%>">
 			<br>
 			<label for="custZip"> Customer Zip: </label>
-			<input name="custZip" id="custZip" type="text" value="<%
+			<input name="custZip" maxlength="5" id="custZip" type="text" value="<%
 				tmp = custZip != null? custZip:"";
 				out.print(tmp);
 			%>">
 			<br>
 			<label for="custTelephone"> Customer Telephone: </label>
-			<input name="custTelephone" id="custTelephone" type="text" value="<%
+			<input name="custTelephone" maxlength="15" id="custTelephone" type="text" value="<%
 				tmp = custTelephone != null? custTelephone:"";
 				out.print(tmp);
 			%>">
 			<br>
 			<label for="custUsername"> Customer Account Username: </label>
-			<input name="custUsername" id="custUsername" type="text" value="<%
+			<input name="custUsername" maxlength="20" id="custUsername" type="text" value="<%
 				tmp = custUsername != null? custUsername:"";
 				out.print(tmp);
 			%>">
 			<br>
 			<label for="custPassword"> Customer Account Password: </label>
-			<input name="custPassword" id="custPassword" type="text" value="<%
+			<input name="custPassword" maxlength="20" id="custPassword" type="text" value="<%
 				tmp = custPassword != null? custPassword:"";
 				out.print(tmp);
 			%>">

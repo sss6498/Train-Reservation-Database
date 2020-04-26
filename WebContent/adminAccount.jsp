@@ -22,48 +22,94 @@
 		<!--  Logic needs to be inserted-->
 			<ul>
 			<% 
-				//The url of our database
-				String url = "jdbc:mysql://mydb.cqqcfvqve8mb.us-east-2.rds.amazonaws.com:3306/cs336RailwayBookingSystem";
-				
-				Class.forName("com.mysql.jdbc.Driver");
-				
-				//Attempting to make a connection to database
-				Connection conn = DriverManager.getConnection(url, "group31", "database20");
-				
-				String bestCustomerStr = 
-						"SELECT c.name_first, c.name_last, t1.money "
-						+ "FROM customer c, "
-						+ "(SELECT *, SUM(r.total_fare) money "
-						+ "FROM reservation r "
-						+ "GROUP BY r.username) t1 "
-						+ "WHERE t1.money = (SELECT MAX(t1.maxMoney) "
-						+	"FROM (SELECT SUM(r.total_fare) maxMoney "
-						+		"FROM reservation r "
-						+		"GROUP BY r.username) t1) "
-						+ "AND c.username=t1.username";
-				
-				Statement bestCustomerQuery = conn.createStatement();
-				ResultSet bestCustomerRes = bestCustomerQuery.executeQuery(bestCustomerStr);
-				
-				if (bestCustomerRes.next() != false){
-					String firstName = bestCustomerRes.getString("name_first");
-					String lastName = bestCustomerRes.getString("name_last");
-					out.print("<li>" + firstName + " " + lastName + "</li>");
+				try{
+					//The url of our database
+					String url = "jdbc:mysql://mydb.cqqcfvqve8mb.us-east-2.rds.amazonaws.com:3306/cs336RailwayBookingSystem";
+					
+					Class.forName("com.mysql.jdbc.Driver");
+					
+					//Attempting to make a connection to database
+					Connection conn = DriverManager.getConnection(url, "group31", "database20");
+					
+					String bestCustomerStr = 
+							"SELECT c.name_first, c.name_last, t1.money "
+							+ "FROM customer c, "
+							+ "(SELECT *, SUM(r.total_fare) money "
+							+ "FROM reservation r "
+							+ "GROUP BY r.username) t1 "
+							+ "WHERE t1.money = (SELECT MAX(t1.maxMoney) "
+							+	"FROM (SELECT SUM(r.total_fare) maxMoney "
+							+		"FROM reservation r "
+							+		"GROUP BY r.username) t1) "
+							+ "AND c.username=t1.username";
+					
+					Statement bestCustomerQuery = conn.createStatement();
+					ResultSet bestCustomerRes = bestCustomerQuery.executeQuery(bestCustomerStr);
+					
+					if (bestCustomerRes.next() != false){
+						String firstName = bestCustomerRes.getString("name_first");
+						String lastName = bestCustomerRes.getString("name_last");
+						String money = bestCustomerRes.getString("money");
+						out.print("<li>" + firstName + " " + lastName + " generating $" + money + " of revenue</li>");
+					}
+					
+					//closing everything used
+					bestCustomerQuery.close();
+					bestCustomerRes.close();
+					conn.close();
+				}catch (Exception e){
+					out.print(e.getMessage());
 				}
-				
-				//closing everything used
-				bestCustomerQuery.close();
-				bestCustomerRes.close();
-				conn.close();
 			%>
 			</ul>
 		
 		
-		<b><u> Top 5 Most Active Transit Lines!</u></b>
+		<b><u> Top 5 Most Active Transit Lines of Last Month!</u></b>
 		<!--  Logic needs to be inserted-->
+			<ul>
+			<% 
+				try{
+					//The url of our database
+					String url = "jdbc:mysql://mydb.cqqcfvqve8mb.us-east-2.rds.amazonaws.com:3306/cs336RailwayBookingSystem";
+					
+					Class.forName("com.mysql.jdbc.Driver");
+					
+					//Attempting to make a connection to database
+					Connection conn = DriverManager.getConnection(url, "group31", "database20");
+					
+					String topFiveTransitStr = "SELECT m.line_name, COUNT(*) num "
+							+ "FROM made_for m, "
+							+ "reservation r "
+							+ "WHERE r.reservation_id=m.reservation_id "
+							+ "AND MONTH(r.date)=(MONTH(CURDATE())-1) "
+							+ "GROUP BY m.line_name "
+							+ "ORDER BY num DESC";
+					
+					Statement topFiveTransitQuery = conn.createStatement();
+					ResultSet topFiveTransitRes = topFiveTransitQuery.executeQuery(topFiveTransitStr);
+					
+					
+					for (int i=0; i<5; i++){
+						if (topFiveTransitRes.next() != false){
+							String lineName = topFiveTransitRes.getString("line_name");
+							String numOfRes = topFiveTransitRes.getString("num");
+							out.print("<li>" + lineName + " with " + numOfRes + " reservations</li>");
+						}else{
+							break;
+						}
+					}
+					
+					//closing everything used
+					topFiveTransitQuery.close();
+					topFiveTransitRes.close();
+					conn.close();
+				}catch(Exception e){
+					out.print(e.getMessage());
+				}
+			
+			%>
+			</ul>
 		
-		<br>
-		<br>
 	
 		<!-- Add, Edit, Delete Fields for Employee -->
 		<b><u> Add, Edit, or Delete Information for an Employee</u></b>
@@ -98,13 +144,13 @@
 			</select>
 			<br>
 			<label for="custFirstName"> First Name: </label>
-			<input name="custFirstName" id="custFirstName" type="text">
+			<input name="custFirstName" maxlength="30" id="custFirstName" type="text">
 			<br>
 			<label for="custLastName"> Last Name: </label>
-			<input name="custLastName" id="custLastName" type="text">
+			<input name="custLastName" maxlength="30" id="custLastName" type="text">
 			<br>
 			<label for="custEmail"> Email:  </label>
-			<input name="custEmail" id="custEmail" type="text">
+			<input name="custEmail" maxlength="30" id="custEmail" type="text">
 			<br>
 			<input type="submit" value="Execute Action!">
 		</form>
@@ -144,7 +190,7 @@
 		<br>
 		<form method="post" action="findReservations.jsp">
 			<label for="trainLineRes"> Train Line Name: </label>
-			<input name="trainLineRes" id="trainLineRes" type="text">
+			<input name="trainLineRes" maxlength="30" id="trainLineRes" type="text">
 			<br>
 			<label for="trainNumberRes"> Train Number: </label>
 			<input name="trainNumberRes" id="trainNumberRes" maxlength="4" type="text">
@@ -161,13 +207,13 @@
 		
 		<form method="post" action="findReservations.jsp">
 			<label for="resFirst"> Customer First Name: </label>
-			<input name="resFirst" id="resFirst" type="text">
+			<input name="resFirst" maxlength="30" id="resFirst" type="text">
 			<br>
 			<label for="resLast"> Customer Last Name: </label>
-			<input name="resLast" id="resLast" type="text">
+			<input name="resLast" maxlength="30" id="resLast" type="text">
 			<br>
 			<label for="resEmail"> Email:  </label>
-			<input name="resEmail" id="resEmail" type="text">
+			<input name="resEmail" maxlength="30" id="resEmail" type="text">
 			<br>
 			<input type="submit" value="Find Reservations!">
 		</form>
@@ -175,40 +221,14 @@
 		<br>
 
 		<!-- Finding/Determining Revenue -->
-		<b><u> Determine Revenue Per: </u></b>
+		<b><u> Determine Revenue: </u></b>
 		<form method="post" action="listRevenues.jsp">
-			<label for="trainLineRev"> Train Line Name: </label>
-			<input name="trainLineRev" id="trainLineRev" type="text">
-			<br>
-			<input type="submit" value="List Revenues!">
-		</form>
-		
-		<br>
-		<u> OR USE: </u>
-		<br>
-		<br>
-		
-		<form method="post" action="listRevenues.jsp">
-			<label for="destCityRev"> Destination City: </label>
-			<input name="destCityRev" id="destCityRev" type="text">
-			<br>
-			<input type="submit" value="List Revenues!">
-		</form>
-		
-		<br>
-		<u> OR USE: </u>
-		<br>
-		<br>
-		
-		<form method="post" action="listRevenues.jsp">
-			<label for="revFirst"> Customer First Name: </label>
-			<input name="revFirst" id="revFirst" type="text">
-			<br>
-			<label for="revLast"> Customer Last Name: </label>
-			<input name="revLast" id="revLast" type="text">
-			<br>
-			<label for="revEmail"> Customer Email: </label>
-			<input name="revEmail" id="revEmail" type="text">
+			<label for="revPer"> Revenue Per: </label>
+			<select name="revPer" id="revPer">
+				<option value="transitLine"> Transit Line </option>
+				<option value="destinationCity"> Destination City </option>
+				<option value="customer"> Customer </option>
+			</select>
 			<br>
 			<input type="submit" value="List Revenues!">
 		</form>
