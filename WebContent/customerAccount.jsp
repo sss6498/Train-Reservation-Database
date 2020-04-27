@@ -59,37 +59,36 @@
 	
 	<br>
 	
-		<form action="createCustomerReservation.jsp">
+	<form action="createCustomerReservation.jsp">
 		Create a reservation:
 		<label for="origin">Origin:</label>
-		<select id="origin">
-		  <option value="f.origin_id">ALL</option>
-		  <option value="Trenton">Trenton</option>
-		  <option value="Philadelphia 30th Street">Philadelphia 30th Street</option>	
+		<select id="origin" name="origin">
+		  <option value="0" name="Trenton">Trenton</option>
+		  <option value="2" name="Philadelphia 30th Street">Philadelphia 30th Street</option>	
 		</select>
 		
 		<label for="destination">Destination:</label>
-		<select id="destination">
-		  <option value="s.name">ALL</option>
-		  <option value="Newark">Newark</option>
-		  <option value="Atlantic City">Atlantic City</option>	
+		<select id="destination" name="destination">
+		  <option value="1" name="Newark">Newark</option>
+		  <option value="3" name="Atlantic City">Atlantic City</option>	
 		</select>
 		<label for="date">Date of Travel(yyyy-mm-dd):</label>
 		  <input type="text" id="date" name="date">	
 		<label for="total_fare">Type of passenger:</label>
-		<select id="total_fare">
+		<select id="total_fare" name="total_fare">
 			<option value="5">Adult</option>
 			<option value="3">Senior</option>
 			<option value="2">Disabled</option>
 		</select>
-		<label for="class">Type of passenger:</label>
-		<select id="class">
+		<label for="seatClass">Type of passenger:</label>
+		<select id="seatClass" name="seatClass">
 			<option value="Economy">Economy</option>
 			<option value="Business">Business</option>
 			<option value="First">First</option>
 		</select>
+		<input type="hidden" id="username" name="username" value=<%=username%>>
 		<input type="submit" value="Submit">
-		</form>
+	</form>
 
 	</body>
 </html>

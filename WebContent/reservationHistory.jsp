@@ -24,7 +24,7 @@ All your past and current train reservations are listed below
 				//Attempting to make a connection to database
 				Connection conn = DriverManager.getConnection(url, "group31", "database20");
 						
-				String resHistLookupStr = "SELECT r.reservation_id, r.date, r.class, r.seat_num, r.booking_fee, r.total_fare"
+				String resHistLookupStr = "SELECT r.reservation_id, r.date, r.class, r.seat_num, r.booking_fee, r.total_fare "
 						+ "FROM reservation r "
 						+ "WHERE r.username = ?;";
 
