@@ -27,8 +27,10 @@
 				String seatClass = request.getParameter("seatClass");
 				String origin = request.getParameter("origin");
 				String destination = request.getParameter("destination");
+				String arrivalTime = request.getParameter("departure_time") + ":00";
+				String departureTime = request.getParameter("arrival_time") + ":00";
 				
-				String checkOnScheduleStr = "SELECT f.line_name, f.train_id, f.num_seats_available "
+				String checkOnScheduleStr = "SELECT f.line_name, f.train_id, f.num_seats_available, f.departure_time, f.arrival_time "
 						+ "FROM follows_a f "
 						+ "WHERE (f.origin_id = ? and f.destination_id = ?);";
 						
@@ -41,6 +43,8 @@
 				String line = "";
 				String tID = "";
 				String seats = "";
+				Time dTime = null;
+				Time aTime = null;
 			
 				
 				while (lineRS.next()) {
@@ -48,9 +52,11 @@
 					tID = lineRS.getString("train_id");
 					out.println(tID);
 					seats = lineRS.getString("num_seats_available");
+					dTime = lineRS.getTime("departure_time");
+					aTime = lineRS.getTime("arrival_time");
 				}
 				
-				if (line != null) {
+				if (line != "" && dTime.toString().equals(departureTime) && aTime.toString().equals(arrivalTime)) {
 					
 					String resIDMakeStr = "SELECT MAX(r.reservation_id) "
 							+ "FROM reservation r;";
@@ -82,14 +88,9 @@
 					while (seatRS.next())
 						totalSeats = seatRS.getString(1);
 					
-										
-					//out.println(totalSeats);
-					//out.println(seats);
-					//out.println("YO JOSUKE");
-
-					String sNum = "0";
-					String tNum = "0";
-					if((totalSeats != null) && (seats != null)) {
+					String sNum = "";
+					String tNum = "";
+					if((totalSeats != "") && (seats != "")) {
 						sNum = Integer.toString(Integer.parseInt(totalSeats) - Integer.parseInt(seats));
 						tNum = Integer.toString(Integer.parseInt(seats) - 1);
 					}

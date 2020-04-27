@@ -73,7 +73,11 @@
 		  <option value="3" name="Atlantic City">Atlantic City</option>	
 		</select>
 		<label for="date">Date of Travel(yyyy-mm-dd):</label>
-		  <input type="text" id="date" name="date">	
+		  <input type="text" id="date" name="date">
+		<label for="date">Time of departure (hh:mm):</label>
+		  <input type="text" id="departure_time" name="departure_time">
+		<label for="date">Time of arrival (hh:mm):</label>
+		  <input type="text" id="arrival_time" name="arrival_time">
 		<label for="total_fare">Type of passenger:</label>
 		<select id="total_fare" name="total_fare">
 			<option value="5">Adult</option>
