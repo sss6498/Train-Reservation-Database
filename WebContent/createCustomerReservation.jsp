@@ -25,44 +25,111 @@
 				String totalFare = request.getParameter("total_fare");
 				String date = request.getParameter("date");
 				String seatClass = request.getParameter("seatClass");
+				String origin = request.getParameter("origin");
+				String destination = request.getParameter("destination");
 				
-				String resIDMakeStr = "SELECT MAX(r.reservation_id)"
-						+ "FROM reservation r;";
+				String checkOnSchedule1Str = "SELECT t.line_name "
+						+ "FROM train_schedule t "
+						+ "WHERE t.origin = ?;";
 						
-				PreparedStatement resIDMakeQuery = conn.prepareStatement(resIDMakeStr);
+				String checkOnSchedule2Str = "SELECT t.line_name "
+						+ "FROM train_schedule t "
+						+ "WHERE t.destination = ?;";		
+						
+				PreparedStatement checkOnSchedule1 = conn.prepareStatement(checkOnSchedule1Str);
+				checkOnSchedule1.setString(1, origin);
 				
-				ResultSet rs = resIDMakeQuery.executeQuery();
+				PreparedStatement checkOnSchedule2 = conn.prepareStatement(checkOnSchedule2Str);
+				checkOnSchedule2.setString(1, destination);
 				
-				String newResID = "";
+				ResultSet originRS = checkOnSchedule1.executeQuery();			
+				ResultSet destinationRS = checkOnSchedule2.executeQuery();
 				
-				while (rs.next())
-					newResID = rs.getString(1);
+				String o = "";
+				String d = "";
 				
-				int temp = Integer.parseInt(newResID) + 1;
+				while (originRS.next())
+					o = originRS.getString(1);
 				
-				newResID = Integer.toString(temp);
-		
+				while (destinationRS.next())
+					d = destinationRS.getString(1);
 				
-				//Looking up the account in the database
-				String createResInfoStr = "INSERT INTO reservation(reservation_id, total_fare, date, class, seat_num, booking_fee, username) "
-						+ "VALUES (?, ?, ?, ?, ?, ?, ?);";
 				
-				PreparedStatement createResInfoQuery = conn.prepareStatement(createResInfoStr);
+				if (o.equals(d)) {
+					String resIDMakeStr = "SELECT MAX(r.reservation_id)"
+							+ "FROM reservation r;";
+							
+					PreparedStatement resIDMakeQuery = conn.prepareStatement(resIDMakeStr);
+					
+					ResultSet rs = resIDMakeQuery.executeQuery();
+					
+					String newResID = "";
+					
+					while (rs.next())
+						newResID = rs.getString(1);
+					
+					int temp = Integer.parseInt(newResID) + 1;
+					
+					newResID = Integer.toString(temp);
+			
+					
+					//Looking up the account in the database
+					String createResInfoStr = "INSERT INTO reservation(reservation_id, total_fare, date, class, seat_num, booking_fee, username) "
+							+ "VALUES (?, ?, ?, ?, ?, ?, ?);";
+					
+					PreparedStatement createResInfoQuery = conn.prepareStatement(createResInfoStr);
+					
+					createResInfoQuery.setString(1, newResID);
+					createResInfoQuery.setString(2, totalFare);
+					createResInfoQuery.setString(3, date);
+					createResInfoQuery.setString(4, seatClass);
+					createResInfoQuery.setString(5, "0");
+					createResInfoQuery.setString(6, "10");
+					createResInfoQuery.setString(7, username);
+					
+					createResInfoQuery.executeUpdate();
+					
+					String getTrainIDStr = "SELECT t.train_id "
+							+ "FROM train_schedule t "
+							+ "WHERE (t.origin = ? AND t.destination = ?);";	
+							
+					PreparedStatement getTrainID = conn.prepareStatement(getTrainIDStr);
+					
+					getTrainID.setString(1, origin);
+					getTrainID.setString(2, destination);
+					
+					ResultSet rsID = getTrainID.executeQuery();
+					
+					String train_id = "";
+					
+					while (rs.next())
+						train_id = rsID.getString(1);
+							
+					String updateMadeForStr = "INSERT INTO made_for(train_id, line_name, reservation_id) "
+							+ "VALUES (?, ?, ?)";
+					
+					PreparedStatement updateMadeFor = conn.prepareStatement(updateMadeForStr);
+					
+					updateMadeFor.setString(1, train_id);
+					updateMadeFor.setString(2, o);
+					updateMadeFor.setString(3, newResID);
+					
+					updateMadeFor.executeUpdate();
+					
+					out.println("Reservation Created!");
+					
+					//closing all objects
+
+					updateMadeFor.close();
+					createResInfoQuery.close();
+					resIDMakeQuery.close();
+				}
+				else {
+					out.println("Sorry, your reservation could not be made. Please pick a valid origin and destination");
+				}
 				
-				createResInfoQuery.setString(1, newResID);
-				createResInfoQuery.setString(2, totalFare);
-				createResInfoQuery.setString(3, date);
-				createResInfoQuery.setString(4, seatClass);
-				createResInfoQuery.setString(5, "0");
-				createResInfoQuery.setString(6, "10");
-				createResInfoQuery.setString(7, username);
-				
-				createResInfoQuery.executeUpdate();
-				
-				out.println("Reservation Created!");
-				
-				//closing all objects
-				createResInfoQuery.close();
+				checkOnSchedule1.close();
+				checkOnSchedule2.close();
 				conn.close();
 				
 				

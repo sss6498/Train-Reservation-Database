@@ -24,26 +24,31 @@
 				String reservationID = request.getParameter("reservation_id");
 				String username = request.getParameter("username");
 				
-				
-				//TO-DO:
-					//Make it so that booking fee and seat number are properly assigned. Total fare may need to be fixed too.
-				
-				//Looking up the account in the database
-				String createResInfoStr = "DELETE FROM reservation "
+				String delResInfoStr = "DELETE FROM reservation "
 						+ "WHERE (reservation_id = ? AND username = ?);";
 
 				
-				PreparedStatement createResInfoQuery = conn.prepareStatement(createResInfoStr);
+				PreparedStatement delResInfoQuery = conn.prepareStatement(delResInfoStr);
 				
-				createResInfoQuery.setString(1, reservationID);
-				createResInfoQuery.setString(2, username);
+				delResInfoQuery.setString(1, reservationID);
+				delResInfoQuery.setString(2, username);
 				
-				createResInfoQuery.executeUpdate();
+				delResInfoQuery.executeUpdate();
+						
+				String delMadeForStr = "DELETE FROM made_for "
+						+ "WHERE reservation_id = ?";
+				
+				PreparedStatement delMadeFor = conn.prepareStatement(delMadeForStr);
+				
+				delMadeFor.setString(1, reservationID);
+				
+				delMadeFor.executeUpdate();
 				
 				out.println("Reservation Deleted!");
 				
 				//closing all objects
-				createResInfoQuery.close();
+				delMadeFor.close();
+				delResInfoQuery.close();
 				conn.close();
 				
 				
