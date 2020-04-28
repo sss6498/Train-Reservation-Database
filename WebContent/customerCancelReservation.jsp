@@ -34,7 +34,7 @@
 				delResInfoQuery.setString(2, username);
 				
 				delResInfoQuery.executeUpdate();
-						
+				
 				String delMadeForStr = "DELETE FROM made_for "
 						+ "WHERE reservation_id = ?";
 				
