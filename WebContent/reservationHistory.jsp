@@ -29,9 +29,6 @@ All your past and current train reservations are listed below
 						+ "f.arrival_time AS 'Arrival Time', s.name AS 'Departure Station' , x.name AS 'Arrival Station' "
 						+ "FROM reservation r, follows_a f, made_for m, station s , station x "
 						+ "WHERE r.username = ? and r.reservation_id = m.reservation_id and m.train_id = f.train_id and m.line_name = f.line_name and s.station_id = f.origin_id and x.station_id = f.destination_id;";
-				/* 		+ "INNER JOIN SELECT s.name AS 'Arrival Station' "
-						+ "FROM reservation r, follows_a f, made_for m, station s "
-						+ "WHERE r.username = ? and r.reservation_id = m.reservation_id and m.train_id = f.train_id and m.line_name = f.line_name and s.station_id = f.destination_id;"; */
 
 				PreparedStatement scheduleLookupQuery = conn.prepareStatement(resHistLookupStr);
 				
