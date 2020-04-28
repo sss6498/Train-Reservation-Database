@@ -38,12 +38,23 @@
 				insertAccountInfoQuery.setString(1, username);
 				insertAccountInfoQuery.setString(2, password);
 				
+				
+				
+				String insertAccountInfoStr1 = "INSERT INTO question (username) "
+						+ "VALUES (?)";
+
+				PreparedStatement insertAccountInfoQuery1 = conn.prepareStatement(insertAccountInfoStr1);
+				
+				insertAccountInfoQuery1.setString(1, username);
+				
 				insertAccountInfoQuery.executeUpdate();
+				insertAccountInfoQuery1.executeUpdate();
 				
 				out.println("Account created, " + username + "!");
 				
 				//closing all objects
 				insertAccountInfoQuery.close();
+				insertAccountInfoQuery1.close();
 				conn.close();
 				
 				
