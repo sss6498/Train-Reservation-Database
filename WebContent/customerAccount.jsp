@@ -48,8 +48,8 @@
 		<select id="sortby" name="sortby">
 		  <option value="f.arrival_time">Arrival Time</option>
 		  <option value="f.departure_time">Departure Time</option>
-		  <option value="f.origin_id">Origin</option>	
-		  <option value="s.name">Station Name</option>
+		  <option value="s.name">Origin</option>	
+		  <option value="s.name">Destination</option>
 		  <option value="r.total_fare">Total Fare</option>
 		</select>
 		<input type="submit" value="Submit">
