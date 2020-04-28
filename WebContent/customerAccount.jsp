@@ -69,14 +69,22 @@
 		Create a reservation:
 		<label for="origin">Origin:</label>
 		<select id="origin" name="origin">
-		  <option value="0" name="Trenton">Trenton</option>
-		  <option value="2" name="Philadelphia 30th Street">Philadelphia 30th Street</option>	
+		  <option value="Trenton">Trenton</option>
+		  <option value="Metropark">Metropark</option>
+		  <option value="Newark">Newark</option>
+		  <option value="Philadelphia 30th Street">Philadelphia 30th Street</option>
+		  <option value="Cherry Hill">Cherry Hill</option>		
+		  <option value="Atlantic City">Atlantic City</option>	
 		</select>
 		
 		<label for="destination">Destination:</label>
 		<select id="destination" name="destination">
-		  <option value="1" name="Newark">Newark</option>
-		  <option value="3" name="Atlantic City">Atlantic City</option>	
+		  <option value="Trenton">Trenton</option>
+		  <option value="Metropark">Metropark</option>
+		  <option value="Newark">Newark</option>
+		  <option value="Philadelphia 30th Street">Philadelphia 30th Street</option>
+		  <option value="Cherry Hill">Cherry Hill</option>		
+		  <option value="Atlantic City">Atlantic City</option>		
 		</select>
 		<label for="date">Date of Travel(yyyy-mm-dd):</label>
 		  <input type="text" id="date" name="date">
