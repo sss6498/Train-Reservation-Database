@@ -158,9 +158,9 @@
 					/*
 					String scheduledArrival = "";
 					String actualArrival = "";
-					String getsched = "SELECT x.arrival_time, y.arrival_time " 
+					String getsched = "SELECT x.arrival_time AS time1, y.arrival_time AS time2 " 
 							+ "FROM follows_a x, stops_at y" 
-							+ " WHERE x.train_id = y.trainid and x.destination_id = y.station_id";
+							+ " WHERE x.train_id = y.train_id and x.line_name = y.line_name";
 					
 					PreparedStatement getschedQuery = conn.prepareStatement(getsched);
 					
