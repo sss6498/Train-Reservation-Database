@@ -24,27 +24,20 @@ All your past and current train reservations are listed below
 				//Attempting to make a connection to database
 				Connection conn = DriverManager.getConnection(url, "group31", "database20");
 						
-				String resHistLookupStr = "SELECT r.reservation_id, r.date, r.class, r.seat_num, r.booking_fee, r.total_fare "
-						+ "FROM reservation r "
-						+ "WHERE r.username = ?;";
+				String resHistLookupStr = "SELECT r.reservation_id AS 'Reservation ID', r.class AS Class, r.seat_num AS 'Seat Number', "
+						+ "r.booking_fee AS 'Booking Fee', r.total_fare AS 'Fare', f.line_name AS 'Line', f.departure_time AS 'Departure Time', "
+						+ "f.arrival_time AS 'Arrival Time', s.name AS 'Departure Station' , x.name AS 'Arrival Station' "
+						+ "FROM reservation r, follows_a f, made_for m, station s , station x "
+						+ "WHERE r.username = ? and r.reservation_id = m.reservation_id and m.train_id = f.train_id and m.line_name = f.line_name and s.station_id = f.origin_id and x.station_id = f.destination_id;";
 
 				PreparedStatement scheduleLookupQuery = conn.prepareStatement(resHistLookupStr);
 				
 				scheduleLookupQuery.setString(1, username);
+				//scheduleLookupQuery.setString(2, username);
 				
 				//Executing the query
 				ResultSet rs = scheduleLookupQuery.executeQuery();
 				
-				//Parsing results
-   				/*ResultSetMetaData rsmd = rs.getMetaData();
-  				int columnsNumber = rsmd.getColumnCount();
-   				while (rs.next()) {
-       			for (int i = 1; i <= columnsNumber; i++) {
-          			if (i > 1) out.print(",  ");
-           			String columnValue = rs.getString(i);
-           			out.print(columnValue + " " + rsmd.getColumnName(i));
-      			}
-       			System.out.println("");*/
 				int rowCount = 0;
 				out.println("<P ALIGN='center'><TABLE BORDER=1>");
 				ResultSetMetaData rsmd = rs.getMetaData();

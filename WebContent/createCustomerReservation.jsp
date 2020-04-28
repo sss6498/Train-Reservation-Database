@@ -27,16 +27,23 @@
 				String seatClass = request.getParameter("seatClass");
 				String origin = request.getParameter("origin");
 				String destination = request.getParameter("destination");
-				String arrivalTime = request.getParameter("departure_time") + ":00";
-				String departureTime = request.getParameter("arrival_time") + ":00";
+				String departureDate = date + " " + request.getParameter("departure_time") + ":00";
+				String arrivalDate = date + " " +  request.getParameter("arrival_time") + ":00";
+				String departureTime = request.getParameter("departure_time") + ":00";
+				String arrivalTime = request.getParameter("arrival_time") + ":00";
 				
-				String checkOnScheduleStr = "SELECT f.line_name, f.train_id, f.num_seats_available, f.departure_time, f.arrival_time "
+				//out.println("Departure time: " + departureTime);
+				//out.println("Arrival time: " + arrivalTime);
+				
+				String checkOnScheduleStr = "SELECT DISTINCT f.line_name, f.train_id, f.num_seats_available, f.departure_time, f.arrival_time "
 						+ "FROM follows_a f "
-						+ "WHERE (f.origin_id = ? and f.destination_id = ?);";
+						+ "WHERE (f.origin_id = ? and f.destination_id = ? and departure_time = ? and arrival_time = ?);";
 						
 				PreparedStatement checkOnSchedule = conn.prepareStatement(checkOnScheduleStr);
 				checkOnSchedule.setString(1, origin);
 				checkOnSchedule.setString(2, destination);
+				checkOnSchedule.setString(3, departureDate);
+				checkOnSchedule.setString(4, arrivalDate);
 				
 				ResultSet lineRS = checkOnSchedule.executeQuery();
 				
@@ -45,19 +52,22 @@
 				String seats = "";
 				Time dTime = null;
 				Time aTime = null;
-			
 				
 				while (lineRS.next()) {
 					line = lineRS.getString("line_name");
 					tID = lineRS.getString("train_id");
-					out.println(tID);
 					seats = lineRS.getString("num_seats_available");
 					dTime = lineRS.getTime("departure_time");
 					aTime = lineRS.getTime("arrival_time");
 				}
 				
+				//out.println(line + "\n");
+				//out.println(dTime.toString() + " = " + departureTime + "\n");
+				//out.println(aTime.toString() + " = " + arrivalTime + "\n");
+				if (seats.equals("0"))
+					throw new Exception("There are no seats available on that train!");
+				
 				if (line != "" && dTime.toString().equals(departureTime) && aTime.toString().equals(arrivalTime)) {
-					
 					String resIDMakeStr = "SELECT MAX(r.reservation_id) "
 							+ "FROM reservation r;";
 							
@@ -90,6 +100,7 @@
 					
 					String sNum = "";
 					String tNum = "";
+
 					if((totalSeats != "") && (seats != "")) {
 						sNum = Integer.toString(Integer.parseInt(totalSeats) - Integer.parseInt(seats));
 						tNum = Integer.toString(Integer.parseInt(seats) - 1);
@@ -97,12 +108,14 @@
 					
 					String updateFollowsStr = "UPDATE follows_a f "
 							+ "SET f.num_seats_available = ? "
-							+ "WHERE (f.origin_id = ? and f.destination_id = ?);";
+							+ "WHERE (f.origin_id = ? and f.destination_id = ? and departure_time = ? and arrival_time = ?);";
 					
 					PreparedStatement updateFollows = conn.prepareStatement(updateFollowsStr);
 					updateFollows.setString(1, tNum);
 					updateFollows.setString(2, origin);
 					updateFollows.setString(3, destination);
+					updateFollows.setString(4, departureDate);
+					updateFollows.setString(5, arrivalDate);
 					
 					updateFollows.executeUpdate();
 					//Looking up the account in the database
