@@ -90,6 +90,21 @@
 		</select>
 		<input type="submit" value="Submit">
 		</form>
+		
+		
+	<br>
+		<form method=post action=customerQuestion.jsp>
+			<label for="quesCreate"> Need help? Ask a question: </label>
+			<input name="question" id="quesCreate" type="text">
+			<input type="submit" value="Submit!">
+		</form>
+		<form method=get action=browseQuestions.jsp>
+				OR
+			<label for="browseQues"></label>
+			<input type="submit" value="Browse/Search Questions">
+			<br>
+		</form>
+		
 
 	</body>
 </html>
