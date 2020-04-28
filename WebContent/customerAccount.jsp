@@ -27,7 +27,7 @@
 		<select id="origin" name="origin">
 		  <option value="Trenton">Trenton</option>
 		  <option value="Metropark">Metropark</option>
-		  <option value="Newark">Newark</option>
+		  <option value="Newark Penn Station">Newark Penn Station</option>
 		  <option value="Philadelphia 30th Street">Philadelphia 30th Street</option>
 		  <option value="Cherry Hill">Cherry Hill</option>		
 		  <option value="Atlantic City">Atlantic City</option>	
@@ -37,7 +37,7 @@
 		<select id="destination" name="destination">
 		  <option value="Trenton">Trenton</option>
 		  <option value="Metropark">Metropark</option>
-		  <option value="Newark">Newark</option>
+		  <option value="Newark Penn Station">Newark Penn Station</option>
 		  <option value="Philadelphia 30th Street">Philadelphia 30th Street</option>
 		  <option value="Cherry Hill">Cherry Hill</option>		
 		  <option value="Atlantic City">Atlantic City</option>	
@@ -46,8 +46,8 @@
 		  <input type="date" id="date" name="date">	
 		<label for="sortby">Sort By:</label>
 		<select id="sortby" name="sortby">
-		  <option value="f.arrival_time">Arrival Time</option>
-		  <option value="f.departure_time">Departure Time</option>
+		  <option value="d.arrival_time">Arrival Time</option>
+		  <option value="o.departure_time">Departure Time</option>
 		  <option value="s.name">Origin</option>	
 		  <option value="s.name">Destination</option>
 		  <option value="r.total_fare">Total Fare</option>

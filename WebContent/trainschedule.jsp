@@ -28,11 +28,14 @@ Below are the train reservations for your search:
 				String sortby = request.getParameter("sortby");
 				
 				//Retreiving schedule from database
-				String scheduleLookupStr = "SELECT DISTINCT r.reservation_id, r.seat_num, r.class, r.total_fare, r.date, s.name, m.line_name, p.arrival_time, p.departure_time "
-						+ "FROM reservation r, made_for m, follows_a f, stops_at p, station s "
-						+ "WHERE r.reservation_id=m.reservation_id AND m.train_id=f.train_id AND f.train_id=p.train_id AND m.line_name=p.line_name AND p.station_id = s.station_id "
-						+ "AND s.name = ? AND p.arrival_time < (SELECT max(p.arrival_time) from station s, stops_at p WHERE s.station_id=p.station_id AND s.name = ? ) "
+				String scheduleLookupStr = "SELECT DISTINCT r.reservation_id, r.seat_num, r.class, r.total_fare, r.date, s.name, m.line_name, o.departure_time, min(d.arrival_time) "
+						+ "FROM reservation r, made_for m, stops_at o, station s, stops_at d "
+						+ "WHERE r.reservation_id=m.reservation_id AND m.train_id=o.train_id AND (m.train_id=o.train_id XOR m.line_name=o.line_name) AND o.station_id=s.station_id "
+						+ "AND o.station_id = (SELECT station_id from station where name= ? ) "
+						+ "AND d.station_id = (SELECT station_id from station where name= ? ) "
+						+ "AND o.departure_time < d.arrival_time "
 						+ "AND r.date = ? "
+						+ "group by r.reservation_id "
 						+ "ORDER BY ? ;";
 				
 				String lineLookupStr = "Select DISTINCT s.name from station s, stops_at p Where s.station_id=p.station_id AND p.line_name IN ( "
