@@ -27,36 +27,38 @@
 				String seatClass = request.getParameter("seatClass");
 				String origin = request.getParameter("origin");
 				String destination = request.getParameter("destination");
+				String arrivalTime = request.getParameter("departure_time") + ":00";
+				String departureTime = request.getParameter("arrival_time") + ":00";
 				
-				String checkOnSchedule1Str = "SELECT t.line_name "
-						+ "FROM train_schedule t "
-						+ "WHERE t.origin = ?;";
+				String checkOnScheduleStr = "SELECT f.line_name, f.train_id, f.num_seats_available, f.departure_time, f.arrival_time "
+						+ "FROM follows_a f "
+						+ "WHERE (f.origin_id = ? and f.destination_id = ?);";
 						
-				String checkOnSchedule2Str = "SELECT t.line_name "
-						+ "FROM train_schedule t "
-						+ "WHERE t.destination = ?;";		
-						
-				PreparedStatement checkOnSchedule1 = conn.prepareStatement(checkOnSchedule1Str);
-				checkOnSchedule1.setString(1, origin);
+				PreparedStatement checkOnSchedule = conn.prepareStatement(checkOnScheduleStr);
+				checkOnSchedule.setString(1, origin);
+				checkOnSchedule.setString(2, destination);
 				
-				PreparedStatement checkOnSchedule2 = conn.prepareStatement(checkOnSchedule2Str);
-				checkOnSchedule2.setString(1, destination);
+				ResultSet lineRS = checkOnSchedule.executeQuery();
 				
-				ResultSet originRS = checkOnSchedule1.executeQuery();			
-				ResultSet destinationRS = checkOnSchedule2.executeQuery();
+				String line = "";
+				String tID = "";
+				String seats = "";
+				Time dTime = null;
+				Time aTime = null;
+			
 				
-				String o = "";
-				String d = "";
+				while (lineRS.next()) {
+					line = lineRS.getString("line_name");
+					tID = lineRS.getString("train_id");
+					out.println(tID);
+					seats = lineRS.getString("num_seats_available");
+					dTime = lineRS.getTime("departure_time");
+					aTime = lineRS.getTime("arrival_time");
+				}
 				
-				while (originRS.next())
-					o = originRS.getString(1);
-				
-				while (destinationRS.next())
-					d = destinationRS.getString(1);
-				
-				
-				if (o.equals(d)) {
-					String resIDMakeStr = "SELECT MAX(r.reservation_id)"
+				if (line != "" && dTime.toString().equals(departureTime) && aTime.toString().equals(arrivalTime)) {
+					
+					String resIDMakeStr = "SELECT MAX(r.reservation_id) "
 							+ "FROM reservation r;";
 							
 					PreparedStatement resIDMakeQuery = conn.prepareStatement(resIDMakeStr);
@@ -64,54 +66,67 @@
 					ResultSet rs = resIDMakeQuery.executeQuery();
 					
 					String newResID = "";
-					
+
 					while (rs.next())
 						newResID = rs.getString(1);
 					
 					int temp = Integer.parseInt(newResID) + 1;
 					
 					newResID = Integer.toString(temp);
-			
+
+					String getTotalSeatsStr = "SELECT t.num_of_seats "
+						 + "FROM train t "
+						 + "WHERE t.train_id = ?;";
+						 
+					PreparedStatement getTotalSeats = conn.prepareStatement(getTotalSeatsStr);
+					getTotalSeats.setString(1, tID);
 					
+					ResultSet seatRS = getTotalSeats.executeQuery();
+						 
+					String totalSeats = "";
+	
+					while (seatRS.next())
+						totalSeats = seatRS.getString(1);
+					
+					String sNum = "";
+					String tNum = "";
+					if((totalSeats != "") && (seats != "")) {
+						sNum = Integer.toString(Integer.parseInt(totalSeats) - Integer.parseInt(seats));
+						tNum = Integer.toString(Integer.parseInt(seats) - 1);
+					}
+					
+					String updateFollowsStr = "UPDATE follows_a f "
+							+ "SET f.num_seats_available = ? "
+							+ "WHERE (f.origin_id = ? and f.destination_id = ?);";
+					
+					PreparedStatement updateFollows = conn.prepareStatement(updateFollowsStr);
+					updateFollows.setString(1, tNum);
+					updateFollows.setString(2, origin);
+					updateFollows.setString(3, destination);
+					
+					updateFollows.executeUpdate();
 					//Looking up the account in the database
 					String createResInfoStr = "INSERT INTO reservation(reservation_id, total_fare, date, class, seat_num, booking_fee, username) "
 							+ "VALUES (?, ?, ?, ?, ?, ?, ?);";
-					
 					PreparedStatement createResInfoQuery = conn.prepareStatement(createResInfoStr);
 					
 					createResInfoQuery.setString(1, newResID);
 					createResInfoQuery.setString(2, totalFare);
 					createResInfoQuery.setString(3, date);
 					createResInfoQuery.setString(4, seatClass);
-					createResInfoQuery.setString(5, "0");
+					createResInfoQuery.setString(5, sNum);
 					createResInfoQuery.setString(6, "10");
 					createResInfoQuery.setString(7, username);
 					
 					createResInfoQuery.executeUpdate();
 					
-					String getTrainIDStr = "SELECT t.train_id "
-							+ "FROM train_schedule t "
-							+ "WHERE (t.origin = ? AND t.destination = ?);";	
-							
-					PreparedStatement getTrainID = conn.prepareStatement(getTrainIDStr);
-					
-					getTrainID.setString(1, origin);
-					getTrainID.setString(2, destination);
-					
-					ResultSet rsID = getTrainID.executeQuery();
-					
-					String train_id = "";
-					
-					while (rs.next())
-						train_id = rsID.getString(1);
-							
 					String updateMadeForStr = "INSERT INTO made_for(train_id, line_name, reservation_id) "
 							+ "VALUES (?, ?, ?)";
-					
+		
 					PreparedStatement updateMadeFor = conn.prepareStatement(updateMadeForStr);
 					
-					updateMadeFor.setString(1, train_id);
-					updateMadeFor.setString(2, o);
+					updateMadeFor.setString(1, tID);
+					updateMadeFor.setString(2, line);
 					updateMadeFor.setString(3, newResID);
 					
 					updateMadeFor.executeUpdate();
@@ -128,8 +143,7 @@
 					out.println("Sorry, your reservation could not be made. Please pick a valid origin and destination");
 				}
 				
-				checkOnSchedule1.close();
-				checkOnSchedule2.close();
+				checkOnSchedule.close();
 				conn.close();
 				
 				

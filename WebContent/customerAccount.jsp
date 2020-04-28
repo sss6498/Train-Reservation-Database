@@ -24,26 +24,32 @@
 	<form action="trainschedule.jsp">
 		Search for train schedule reservations:
 		<label for="origin">Origin:</label>
-		<select id="origin">
-		  <option value="f.origin_id">ALL</option>
+		<select id="origin" name="origin">
 		  <option value="Trenton">Trenton</option>
-		  <option value="Philadelphia 30th Street">Philadelphia 30th Street</option>	
+		  <option value="Metropark">Metropark</option>
+		  <option value="Newark">Newark</option>
+		  <option value="Philadelphia 30th Street">Philadelphia 30th Street</option>
+		  <option value="Cherry Hill">Cherry Hill</option>		
+		  <option value="Atlantic City">Atlantic City</option>	
 		</select>
 		
 		<label for="destination">Destination:</label>
-		<select id="destination">
-		  <option value="s.name">ALL</option>
+		<select id="destination" name="destination">
+		  <option value="Trenton">Trenton</option>
+		  <option value="Metropark">Metropark</option>
 		  <option value="Newark">Newark</option>
+		  <option value="Philadelphia 30th Street">Philadelphia 30th Street</option>
+		  <option value="Cherry Hill">Cherry Hill</option>		
 		  <option value="Atlantic City">Atlantic City</option>	
 		</select>
 		<label for="date">Date of Travel(yyyy-mm-dd):</label>
-		  <input type="text" id="date" name="date">	
+		  <input type="date" id="date" name="date">	
 		<label for="sortby">Sort By:</label>
-		<select id="sortby">
+		<select id="sortby" name="sortby">
 		  <option value="f.arrival_time">Arrival Time</option>
 		  <option value="f.departure_time">Departure Time</option>
-		  <option value="f.origin_id">Origin</option>	
-		  <option value="s.name">Station Name</option>
+		  <option value="s.name">Origin</option>	
+		  <option value="s.name">Destination</option>
 		  <option value="r.total_fare">Total Fare</option>
 		</select>
 		<input type="submit" value="Submit">
@@ -59,36 +65,48 @@
 	
 	<br>
 	
-		<form action="createCustomerReservation.jsp">
+	<form action="createCustomerReservation.jsp">
 		Create a reservation:
 		<label for="origin">Origin:</label>
-		<select id="origin">
-		  <option value="f.origin_id">ALL</option>
+		<select id="origin" name="origin">
 		  <option value="Trenton">Trenton</option>
-		  <option value="Philadelphia 30th Street">Philadelphia 30th Street</option>	
+		  <option value="Metropark">Metropark</option>
+		  <option value="Newark">Newark</option>
+		  <option value="Philadelphia 30th Street">Philadelphia 30th Street</option>
+		  <option value="Cherry Hill">Cherry Hill</option>		
+		  <option value="Atlantic City">Atlantic City</option>	
 		</select>
 		
 		<label for="destination">Destination:</label>
-		<select id="destination">
-		  <option value="s.name">ALL</option>
+		<select id="destination" name="destination">
+		  <option value="Trenton">Trenton</option>
+		  <option value="Metropark">Metropark</option>
 		  <option value="Newark">Newark</option>
-		  <option value="Atlantic City">Atlantic City</option>	
+		  <option value="Philadelphia 30th Street">Philadelphia 30th Street</option>
+		  <option value="Cherry Hill">Cherry Hill</option>		
+		  <option value="Atlantic City">Atlantic City</option>		
 		</select>
 		<label for="date">Date of Travel(yyyy-mm-dd):</label>
-		  <input type="text" id="date" name="date">	
+		  <input type="text" id="date" name="date">
+		<label for="date">Time of departure (hh:mm):</label>
+		  <input type="text" id="departure_time" name="departure_time">
+		<label for="date">Time of arrival (hh:mm):</label>
+		  <input type="text" id="arrival_time" name="arrival_time">
 		<label for="total_fare">Type of passenger:</label>
-		<select id="total_fare">
+		<select id="total_fare" name="total_fare">
 			<option value="5">Adult</option>
 			<option value="3">Senior</option>
 			<option value="2">Disabled</option>
 		</select>
-		<label for="class">Type of passenger:</label>
-		<select id="class">
+		<label for="seatClass">Type of passenger:</label>
+		<select id="seatClass" name="seatClass">
 			<option value="Economy">Economy</option>
 			<option value="Business">Business</option>
 			<option value="First">First</option>
 		</select>
+		<input type="hidden" id="username" name="username" value=<%=username%>>
 		<input type="submit" value="Submit">
+<<<<<<< HEAD
 		</form>
 		
 		
@@ -105,6 +123,9 @@
 			<br>
 		</form>
 		
+=======
+	</form>
+>>>>>>> branch 'master' of https://shivumm6@bitbucket.org/jiger_prajapati/cs336trainproject.git
 
 	</body>
 </html>
