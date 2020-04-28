@@ -115,6 +115,7 @@
 			<input name="question" id="quesCreate" type="text">
 			<input type="submit" value="Submit!">
 		</form>
+		<%session.setAttribute("username", request.getParameter("username")); %>
 		<form method=get action=browseQuestions.jsp>
 				OR
 			<label for="browseQues"></label>

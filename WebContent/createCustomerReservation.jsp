@@ -138,6 +138,31 @@
 					updateMadeFor.close();
 					createResInfoQuery.close();
 					resIDMakeQuery.close();
+					
+					
+					//calculate a delay
+					
+					/*
+					String scheduledArrival = "";
+					String actualArrival = "";
+					String getsched = "SELECT x.arrival_time, y.arrival_time " 
+							+ "FROM follows_a x, stops_at y" 
+							+ " WHERE x.train_id = y.trainid and x.destination_id = y.station_id";
+					
+					PreparedStatement getschedQuery = conn.prepareStatement(getsched);
+					
+					ResultSet rs1 = getschedQuery.executeQuery();
+					
+					rs1.next();
+					scheduledArrival = rs1.getString("time1");
+					actualArrival = rs1.getString("time2");
+					if(!scheduledArrival.equals(actualArrival)){
+						out.print(Attention, Train may be delayed!);
+					}
+					getschedQuery.close();
+					rs1.close();
+					*/
+					
 				}
 				else {
 					out.println("Sorry, your reservation could not be made. Please pick a valid origin and destination");

@@ -10,7 +10,12 @@
 		<title>Group 31 Railway Booking</title>
 	</head>
 	
+	
 	<body>
+	<button type="button" name="back" onclick="history.back()">Back</button>
+	<br>
+	<br>
+	<b>Results:</b>
 	<%
 	    
 		try {
@@ -41,11 +46,14 @@
 			//make a column
 			out.print("<td>");
 			//print out column header
-			out.print("Username");
+			out.print("Question");
 			out.print("</td>");
 			//make a column
 			out.print("<td>");
-			out.print("Password");
+			out.print("Answer");
+			out.print("</td>");
+			out.print("<td>");
+			out.print("Submitted By");
 			out.print("</td>");
 
 			//parse out the results
@@ -60,6 +68,12 @@
 				out.print("<td>");
 				//Print out current bar/beer additional info: Manf or Address
 				out.print(result.getString("answer"));
+				out.print("</td>");
+				out.print("<td>");
+				//Print out current bar/beer additional info: Manf or Address
+				out.print(result.getString("name_first"));
+				out.print(" ");
+				out.print(result.getString("name_last"));
 				out.print("</td>");
 
 			}
