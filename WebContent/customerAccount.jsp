@@ -106,7 +106,6 @@
 		</select>
 		<input type="hidden" id="username" name="username" value=<%=username%>>
 		<input type="submit" value="Submit">
-<<<<<<< HEAD
 		</form>
 		
 		
@@ -123,9 +122,6 @@
 			<br>
 		</form>
 		
-=======
-	</form>
->>>>>>> branch 'master' of https://shivumm6@bitbucket.org/jiger_prajapati/cs336trainproject.git
 
 	</body>
 </html>
