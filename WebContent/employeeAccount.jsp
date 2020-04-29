@@ -215,7 +215,15 @@
 			
 			<br>
 			<input type="submit" value="Execute Action!"> 
+			<br>
+			<br>
 		</form>
+		
+		<form method=post action=employeeAnswerQuestions.jsp>
+			<label for="answerQuestion"> Answer Customer Questions: </label>
+			<input type="submit" value="Go!">
+		</form>
+		<%session.setAttribute("username", request.getParameter("username")); %>
 			
 			
 			 
