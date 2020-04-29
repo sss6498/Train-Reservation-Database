@@ -15,7 +15,6 @@
 			String resID = null;
 			String date = null;
 			String passenger = null;
-			String total_fare = null;
 			String customer_rep = null;
 			String origin = null;
 			String destination = null;
@@ -106,7 +105,6 @@
 					ResultSet rs = getResQuery.executeQuery();
 					//parsing results for reservation 
 					rs.next();
-					total_fare =  rs.getString("total_fare");
 					date = rs.getString("date");
 					seat_class = rs.getString("class");
 					seat_num = rs.getString("seat_num");
@@ -129,9 +127,9 @@
 					+ "WHERE reservation.reservation_id=?";
 					PreparedStatement reservationDeleteQuery = conn.prepareStatement(reservationDeleteStr);
 					reservationDeleteQuery.setString(1, resID);
-					reservationDeleteQuery.executeUpdate();
-					
-					
+					if(reservationDeleteQuery.executeUpdate() == 0){
+						throw new Exception("Reservation does not exist!");
+					}
 					
 					//sending result to the adminActionStatus page
 					request.setAttribute("status", "Delete Successful!");
@@ -143,7 +141,6 @@
 					reservationDeleteQuery.close();
 					return;
 				}
-				
 				
 				//closing the connection
 				conn.close();
@@ -164,35 +161,32 @@
 		<br>
 		<br>
 		
-		<form method="post" action="processEmployeeReservationUpdate.jsp">
+		<form method="post" action="employeeReservation2.jsp">
 		
 			<label for="reservation_id"> Reservation ID:</label>
 			<input name="reservation_id" id="reservation_id" type="text" readonly = "readonly" value="<% out.print(resID); %>">
 			<br>
 		
-			<label for="date"> Date:</label>
+			<label for="date"> Date (YYYY-MM-DD):</label>
 			<input name="date" id="date" type="text" value="<% 
 				String tmp = date != null? date:"";
 				out.print(tmp);
 			%>">
+			
 			<br>
 			<label for="passenger"> Passenger Username: </label>
 			<input name="passenger" id="passenger" type="text" value="<%
 				tmp = passenger != null? passenger:"";
 				out.print(tmp);
 			%>">
-			<br>
-			<label for="totalfare"> Total Fare: </label>
-			<input name="totalfare" maxlength="30" id="totalfare" type="text" value="<%
-				tmp = total_fare != null? total_fare:"";
-				out.print(tmp);
-			%>">
+			
 			<br>
 			<label for="booking_fee"> Booking Fee: </label>
 			<input name="booking_fee" maxlength="30" id="booking_fee" type="text" value="<%
 				tmp = booking_fee != null? booking_fee:"";
 				out.print(tmp);
 			%>">
+			
 			<br>
 			<label for="customer_rep"> Customer Representative: </label>
 			<input name="customer_rep" maxlength="30" id="customer_rep" type="text" value="<%
@@ -357,9 +351,9 @@
 			<br>
 			<label for="seat_class"> Class:</label>
 			<select name = "seat_class" id = "seat_class">
-				<option value="Economy"> Economy </option>
-				<option value="Business"> Business </option>
-				<option value="First"> First </option>
+				<option value="economy"> Economy </option>
+				<option value="business"> Business </option>
+				<option value="first"> First </option>
 			</select>
 			
 			<!-- this is the train number drop down box -->

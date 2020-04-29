@@ -21,14 +21,14 @@
 			String stops = null;
 			String departure = null;
 			String departure_month = null;
-			String departure_day = null;
-			String departure_year = null;
+			String departure_day = "01";
+			String departure_year = "2020";
 			String departure_hour = null;
 			String departure_min = null;
 			String arrival = null;
 			String arrival_month = null;
-			String arrival_day = null;
-			String arrival_year = null;
+			String arrival_day = "01";
+			String arrival_year = "2020";
 			String arrival_hour = null;
 			String arrival_min = null;
 			String fare = null;
@@ -64,6 +64,8 @@
 						throw new Exception("Must provide Train Line Name & Train Number!");
 					}
 					
+					
+					
 					String createFollowsAStr = "INSERT INTO follows_a() "
 							+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 					PreparedStatement createFollowsAQuery = conn.prepareStatement(createFollowsAStr);
@@ -75,7 +77,13 @@
 					createFollowsAQuery.setString(6, transit_line_name);
 					createFollowsAQuery.setString(7, "0");
 					createFollowsAQuery.setString(8, "0");
-					createFollowsAQuery.executeUpdate();
+					try{
+						createFollowsAQuery.executeUpdate();
+					}catch(Exception e){
+						request.setAttribute("status", "Sorry, a schedule for " + transit_line_name + " for Train Number " + train + " already exists.");
+						RequestDispatcher rd = request.getRequestDispatcher("/employeeActionStatus.jsp");
+						rd.forward(request, response);
+					}
 					createFollowsAQuery.close();
 					
 					
@@ -407,13 +415,13 @@
 			<input name="discounted_oneway_price" id="discounted_oneway_price" type="number" value="<% out.print(discounted_oneway_price); %>">
 			<br>
 			<input name="ticketing_options" id="ticketing_options" type="checkbox" value="Discounted_RoundTrip"> Discounted - Round Trip 
-			<input name="standard_oneway_price" id="standard_oneway_price" type="number" value="<% out.print(discounted_roundtrip_price); %>">
+			<input name="discounted_roundtrip_price" id="discounted_roundtrip_price" type="number" value="<% out.print(discounted_roundtrip_price); %>">
 			<br>
 			<input name="ticketing_options" id="ticketing_options" type="checkbox" value="WeeklyPass"> Weekly Pass 
-			<input name="standard_oneway_price" id="standard_oneway_price" type="number" value="<% out.print(weekly_pass_price); %>">
+			<input name="weekly_pass_price" id="weekly_pass_price" type="number" value="<% out.print(weekly_pass_price); %>">
 			<br>
 			<input name="ticketing_options" id="ticketing_options" type="checkbox" value="MonthlyPass"> Monthly Pass 
-			<input name="standard_oneway_price" id="standard_oneway_price" type="number" value="<% out.print(monthly_pass_price); %>">
+			<input name="monthly_pass_price" id="monthly_pass_price" type="number" value="<% out.print(monthly_pass_price); %>">
 			
 			
 			<br>

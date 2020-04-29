@@ -91,31 +91,22 @@
 			
 			updateStopsAtQuery.executeUpdate();
 			updateStopsAtQuery.close();
-		
 		}
-		
 		
 		request.setAttribute("status", "Successful!");
 		RequestDispatcher rd = request.getRequestDispatcher("/employeeActionStatus.jsp");
 		rd.forward(request, response);
 		
 		//closing connections
-		conn.close();
-		
+		conn.close();	
 		
 	} catch (Exception e){
 		request.setAttribute("status", e.getMessage());
 		RequestDispatcher rd = request.getRequestDispatcher("/employeeActionStatus.jsp");
 		rd.forward(request, response);
 	}
-	
-	
-	
-	
-	
-	
-	%>
 
+	%>
 
 </body>
 </html>

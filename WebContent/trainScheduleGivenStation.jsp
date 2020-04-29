@@ -62,8 +62,16 @@
 				destination = rs.getString("s.name");
 				line_name = rs.getString("f.line_name");
 				train_id = rs.getString("f.train_id");
-				departure_time = rs.getString("f.departure_time");
-				arrival_time = rs.getString("f.arrival_time");
+				try{
+					departure_time = rs.getString("f.departure_time");
+				}catch(Exception e){
+					departure_time = null;
+				}
+				try{
+					arrival_time = rs.getString("f.arrival_time");
+				}catch(Exception e){
+					arrival_time = null;
+				}
 				
 				out.print("<TR>");
 				out.print("<TD>" + station_name + "</TH>");
@@ -87,8 +95,16 @@
 				origin = rs.getString("s.name");
 				line_name = rs.getString("f.line_name");
 				train_id = rs.getString("f.train_id");
-				departure_time = rs.getString("f.departure_time");
-				arrival_time = rs.getString("f.arrival_time");
+				try{
+					departure_time = rs.getString("f.departure_time");
+				}catch(Exception e){
+					departure_time = null;
+				}
+				try{
+					arrival_time = rs.getString("f.arrival_time");
+				}catch(Exception e){
+					arrival_time = null;
+				}
 				
 				out.print("<TR>");
 				out.print("<TD>" + origin + "</TH>");
