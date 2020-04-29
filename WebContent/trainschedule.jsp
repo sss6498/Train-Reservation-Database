@@ -28,15 +28,18 @@ Below are the train reservations for your search:
 				String sortby = request.getParameter("sortby");
 				
 				//Retreiving schedule from database
-				String scheduleLookupStr = "SELECT DISTINCT r.reservation_id, r.seat_num, r.class, r.total_fare, r.date, s.name, p.arrival_time, p.departure_time "
-						+ "FROM reservation r, made_for m, follows_a f, stops_at p, station s "
-						+ "WHERE r.reservation_id=m.reservation_id AND m.line_name=f.line_name AND f.line_name=p.line_name "
-						+ "AND p.station_id = s.station_id AND (s.name = ? OR s.name = ? ) "
-						+ "AND r.date = ? " 
+				String scheduleLookupStr = "SELECT DISTINCT r.reservation_id, r.seat_num, r.class, r.total_fare, r.date, s.name, m.line_name, o.departure_time, min(d.arrival_time) "
+						+ "FROM reservation r, made_for m, stops_at o, station s, stops_at d "
+						+ "WHERE r.reservation_id=m.reservation_id AND m.train_id=o.train_id AND (m.train_id=o.train_id XOR m.line_name=o.line_name) AND o.station_id=s.station_id "
+						+ "AND o.station_id = (SELECT station_id from station where name= ? ) "
+						+ "AND d.station_id = (SELECT station_id from station where name= ? ) "
+						+ "AND o.departure_time < d.arrival_time "
+						+ "AND r.date = ? "
+						+ "group by r.reservation_id "
 						+ "ORDER BY ? ;";
 				
-				String lineLookupStr = "Select s.name from station s, stops_at p Where s.station_id=p.station_id AND p.line_name IN ( "
-						+ "Select p.line_name FROM station s, stops_at p WHERE s.station_id=p.station_id AND (s.name = ? OR s.name = ? ))";
+				String lineLookupStr = "Select DISTINCT s.name from station s, stops_at p Where s.station_id=p.station_id AND p.line_name IN ( "
+						+ "Select p.line_name FROM station s, stops_at p WHERE s.station_id=p.station_id AND (s.name = ? OR s.name = ? ));";
 				
 				PreparedStatement scheduleLookupQuery = conn.prepareStatement(scheduleLookupStr);
 				PreparedStatement lineLookupQuery = conn.prepareStatement(lineLookupStr);
@@ -62,6 +65,7 @@ Below are the train reservations for your search:
 	                <TH>Total Fare</TH>
 	                <TH>Date</TH>
 	                <TH>Station Name</TH>
+	                <TH>Line Name</TH>
 	                <TH>Arrival Time</TH>
 	                <TH>Departure Time</TH>
 	            </TR>
@@ -75,8 +79,9 @@ Below are the train reservations for your search:
 	                <TD> <%= result.getDouble(4) %></TD>
 	                <TD> <%= result.getDate(5) %></TD>
 	                <TD> <%= result.getString(6) %></TD>
-	                <TD> <%= result.getTime(7) %></TD>
+	                <TD> <%= result.getString(7) %></TD>
 	                <TD> <%= result.getTime(8) %></TD>
+	                <TD> <%= result.getTime(9) %></TD>
 
 	            </TR>
 	            <% } %>

@@ -38,12 +38,14 @@
 				insertAccountInfoQuery.setString(1, username);
 				insertAccountInfoQuery.setString(2, password);
 				
+		
 				insertAccountInfoQuery.executeUpdate();
 				
 				out.println("Account created, " + username + "!");
 				
 				//closing all objects
 				insertAccountInfoQuery.close();
+
 				conn.close();
 				
 				

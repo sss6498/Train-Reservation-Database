@@ -10,6 +10,7 @@
 		<title>Customer Info Update -- Group 31 Railway Booking</title>
 	</head>
 	<body>
+
 		<%
 			try {
 				//reading in old and new parameters
@@ -133,5 +134,6 @@
 			}
 		
 		%>
+
 	</body>
 </html>
