@@ -59,10 +59,6 @@
 			    //SimpleDateFormat sdf2 = new SimpleDateFormat("hh:mm");
 			    //java.util.Date travel_time = sdf2.parse(travel_time_str);
 			    
-			    System.out.println(departure_date);
-			    System.out.println(arrival_date);
-			    //System.out.println(travel_time);
-			    
 				
 				//The url of our database
 				String url = "jdbc:mysql://mydb.cqqcfvqve8mb.us-east-2.rds.amazonaws.com:3306/cs336RailwayBookingSystem";
@@ -96,26 +92,71 @@
 				updateFollowsAQuery.executeUpdate();
 				updateFollowsAQuery.close();
 				
-				/*
-				//updating made for row
-				String updatemadeforStr = "UPDATE made_for m "
-						+ "SET m.train_id=?, "
-						+ "m.line_name=? "
-						+ "WHERE m.reservation_id=?";
-						
-				PreparedStatement updatemadeforQuery = conn.prepareStatement(updatemadeforStr);
-				updatemadeforQuery.setString(1, train_num);
-				updatemadeforQuery.setString(2, transit_line);
-				updatemadeforQuery.setString(3, resID);
-				updatemadeforQuery.executeUpdate();
-				updatemadeforQuery.close();
 				
+				// need to add fare prices to the fare table 
+				String createFareStr = null;
+				// figure out what we received from the form 
+				String[] checkedBoxes = request.getParameterValues("ticketing_options");
 				
-				request.setAttribute("status", "Successful!");
-				RequestDispatcher rd = request.getRequestDispatcher("/employeeActionStatus.jsp");
-				rd.forward(request, response);
-				*/
-				//closing connections
+				// delete from fare
+				String fareDeleteStr = "DELETE FROM fare "
+				+ "WHERE fare.train_id=? "
+				+ "AND fare.line_name=?";
+				PreparedStatement fareDeleteQuery = conn.prepareStatement(fareDeleteStr);
+				fareDeleteQuery.setString(1, train);
+				fareDeleteQuery.setString(2, transit_line_name);
+				fareDeleteQuery.executeUpdate();
+				fareDeleteQuery.close();
+				
+				for(int i=0; i < checkedBoxes.length; i++){
+					createFareStr = "INSERT INTO fare() "
+							+ "VALUES (?, ?, ?, ?)";
+					PreparedStatement insertFareQuery = conn.prepareStatement(createFareStr);
+					if (checkedBoxes[i].equals("Standard_OneWay")){
+						insertFareQuery.setString(1, "standard_oneway");
+						insertFareQuery.setString(2, transit_line_name);
+						insertFareQuery.setString(3, train);
+						insertFareQuery.setString(4, request.getParameter("standard_oneway_price"));
+						insertFareQuery.executeUpdate();
+						insertFareQuery.close();
+					}else if (checkedBoxes[i].equals("Standard_RoundTrip")){
+						insertFareQuery.setString(1, "standard_roundtrip");
+						insertFareQuery.setString(2, transit_line_name);
+						insertFareQuery.setString(3, train);
+						insertFareQuery.setString(4, request.getParameter("standard_roundtrip_price"));
+						insertFareQuery.executeUpdate();
+						insertFareQuery.close();
+					}else if (checkedBoxes[i].equals("Discounted_OneWay")){
+						insertFareQuery.setString(1, "discounted_oneway");
+						insertFareQuery.setString(2, transit_line_name);
+						insertFareQuery.setString(3, train);
+						insertFareQuery.setString(4, request.getParameter("discounted_oneway_price"));
+						insertFareQuery.executeUpdate();
+						insertFareQuery.close();
+					}else if (checkedBoxes[i].equals("Discounted_RoundTrip")){
+						insertFareQuery.setString(1, "discounted_roundtrip");
+						insertFareQuery.setString(2, transit_line_name);
+						insertFareQuery.setString(3, train);
+						insertFareQuery.setString(4, request.getParameter("discounted_roundtrip_price"));
+						insertFareQuery.executeUpdate();
+						insertFareQuery.close();
+					}else if (checkedBoxes[i].equals("WeeklyPass")){
+						insertFareQuery.setString(1, "weeklypass");
+						insertFareQuery.setString(2, transit_line_name);
+						insertFareQuery.setString(3, train);
+						insertFareQuery.setString(4, request.getParameter("weekly_pass_price"));
+						insertFareQuery.executeUpdate();
+						insertFareQuery.close();
+					}else { // this is for the MonthlyPass checked box 
+						insertFareQuery.setString(1, "monthlypass");
+						insertFareQuery.setString(2, transit_line_name);
+						insertFareQuery.setString(3, train);
+						insertFareQuery.setString(4, request.getParameter("monthly_pass_price"));
+						insertFareQuery.executeUpdate();
+						insertFareQuery.close();	
+					}
+				}
+				
 				conn.close();
 				
 			} catch (Exception e){

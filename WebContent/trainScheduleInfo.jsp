@@ -33,6 +33,13 @@
 			String arrival_min = null;
 			String fare = null;
 			String num_stops = null;
+			// ticketing prices
+			String standard_oneway_price = null;
+			String standard_roundtrip_price = null;
+			String discounted_oneway_price = null;
+			String discounted_roundtrip_price = null;
+			String weekly_pass_price = null;
+			String monthly_pass_price = null;
 			
 			
 			try{
@@ -71,7 +78,6 @@
 					createFollowsAQuery.executeUpdate();
 					createFollowsAQuery.close();
 					
-					out.print("Edit the relevant fields below and submit!");
 					
 				}else if (trainScheduleAction.equals("Edit Train Info")){
 					
@@ -140,8 +146,6 @@
 					
 					request.setAttribute("origin", origin);
 					request.setAttribute("destination", destination);
-					
-					out.print("Edit the relevant fields below and submit!");
 					
 					
 					// delete all stops that this line name and train id have 
@@ -385,6 +389,32 @@
 			<br>
 			<label for="num_stops"> How many stops will there be?  </label>
 			<input name="num_stops" id="num_stops" type="number" value="<% out.print(num_stops); %>">
+			<br>
+			
+			<!-- Input for Ticketing Prices -->
+			
+			<label for="ticketing_options"> What types of ticketing options would like to be included?  </label>
+			<br>
+			<label for="ticketing_options_instructions"> Instructions: Mark checkbox to include this type of fare. Insert fare price in box. </label>
+			<br>
+			<input name="ticketing_options" id="ticketing_options" type="checkbox" value="Standard_OneWay"> Standard - One Way 
+			<input name="standard_oneway_price" id="standard_oneway_price" type="number" value="<% out.print(standard_oneway_price); %>">
+			<br>
+			<input name="ticketing_options" id="ticketing_options" type="checkbox" value="Standard_RoundTrip"> Standard - Round Trip 
+			<input name="standard_roundtrip_price" id="standard_roundtrip_price" type="number" value="<% out.print(standard_roundtrip_price); %>">
+			<br>
+			<input name="ticketing_options" id="ticketing_options" type="checkbox" value="Discounted_OneWay"> Discounted - One Way 
+			<input name="discounted_oneway_price" id="discounted_oneway_price" type="number" value="<% out.print(discounted_oneway_price); %>">
+			<br>
+			<input name="ticketing_options" id="ticketing_options" type="checkbox" value="Discounted_RoundTrip"> Discounted - Round Trip 
+			<input name="standard_oneway_price" id="standard_oneway_price" type="number" value="<% out.print(discounted_roundtrip_price); %>">
+			<br>
+			<input name="ticketing_options" id="ticketing_options" type="checkbox" value="WeeklyPass"> Weekly Pass 
+			<input name="standard_oneway_price" id="standard_oneway_price" type="number" value="<% out.print(weekly_pass_price); %>">
+			<br>
+			<input name="ticketing_options" id="ticketing_options" type="checkbox" value="MonthlyPass"> Monthly Pass 
+			<input name="standard_oneway_price" id="standard_oneway_price" type="number" value="<% out.print(monthly_pass_price); %>">
+			
 			
 			<br>
 			<br>
