@@ -64,7 +64,16 @@
 						throw new Exception("Must provide Train Line Name & Train Number!");
 					}
 					
-					
+					//get number of seats
+					String getSeatNum = "SELECT t.num_of_seats " 
+								+ "FROM train t "
+								+ "WHERE t.train_id=? ";
+					PreparedStatement getSeatNumQuery = conn.prepareStatement(getSeatNum);
+					getSeatNumQuery.setString(1, train);
+					ResultSet rs1 = getSeatNumQuery.executeQuery();
+					rs1.next();
+					available_num_of_seats = rs1.getString("t.num_of_seats");
+					getSeatNumQuery.close();
 					
 					String createFollowsAStr = "INSERT INTO follows_a() "
 							+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -160,11 +169,22 @@
 					String stopDeleteStr = "DELETE FROM stops_at "
 							+ "WHERE stops_at.train_id=? "
 							+ "AND stops_at.line_name=?";
-							PreparedStatement stopDeleteQuery = conn.prepareStatement(stopDeleteStr);
-							stopDeleteQuery.setString(1, train);
-							stopDeleteQuery.setString(2, transit_line_name);
-							stopDeleteQuery.executeUpdate();
-					
+					PreparedStatement stopDeleteQuery = conn.prepareStatement(stopDeleteStr);
+					stopDeleteQuery.setString(1, train);
+					stopDeleteQuery.setString(2, transit_line_name);
+					stopDeleteQuery.executeUpdate();
+			
+					//get number of seats
+					String getSeatNum = "SELECT t.num_of_seats " 
+								+ "FROM train t "
+								+ "WHERE t.train_id=? ";
+					PreparedStatement getSeatNumQuery = conn.prepareStatement(getSeatNum);
+					getSeatNumQuery.setString(1, train);
+					ResultSet rs4 = getSeatNumQuery.executeQuery();
+					rs1.next();
+					available_num_of_seats = rs4.getString("t.num_of_seats");
+					getSeatNumQuery.close();
+							
 					
 				}else{
 					//can just have query to delete account
@@ -391,9 +411,6 @@
 						<option><%= new DecimalFormat("00").format(i) %></option>
 				<% } %>
 			</select>
-			<br>
-			<label for="num_of_seats"> How many seats will there be?  </label>
-			<input name="num_of_seats" id="num_of_seats" type="number" value="<% out.print(available_num_of_seats); %>">
 			<br>
 			<label for="num_stops"> How many stops will there be?  </label>
 			<input name="num_stops" id="num_stops" type="number" value="<% out.print(num_stops); %>">

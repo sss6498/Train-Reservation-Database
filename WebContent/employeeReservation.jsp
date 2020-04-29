@@ -20,7 +20,6 @@
 			String destination = null;
 			String transit_line = null;
 			String departure = null;
-			String seat_num = null;
 			String seat_class = null;
 			String train_num = null;
 			String booking_fee = null;
@@ -107,10 +106,20 @@
 					rs.next();
 					date = rs.getString("date");
 					seat_class = rs.getString("class");
-					seat_num = rs.getString("seat_num");
 					booking_fee = rs.getString("booking_fee");
 					customer_rep = rs.getString("customer_rep");
 					passenger = rs.getString("username");
+					
+					// get the transit line name and train id 
+					String getData = "SELECT m.train_id, m.line_name " 
+								+ "FROM made_for m "
+								+ "WHERE m.reservation_id=? ";
+					PreparedStatement getDataQuery = conn.prepareStatement(getData);
+					getDataQuery.setString(1, resID);
+					ResultSet rs2 = getDataQuery.executeQuery();
+					rs2.next();
+					train_num = rs2.getString("m.train_id");
+					transit_line = rs2.getString("m.line_name");
 					
 					out.print("Edit the relevant fields below and submit!");
 					
@@ -121,6 +130,43 @@
 					if (resID.equals("")){
 						throw new Exception("Reservation ID Number cannot be blank!");
 					}
+					
+					// get the transit line name and train id 
+					String getData = "SELECT m.train_id, m.line_name " 
+								+ "FROM made_for m "
+								+ "WHERE m.reservation_id=? ";
+					PreparedStatement getDataQuery = conn.prepareStatement(getData);
+					getDataQuery.setString(1, resID);
+					ResultSet rs2 = getDataQuery.executeQuery();
+					rs2.next();
+					train_num = rs2.getString("m.train_id");
+					transit_line = rs2.getString("m.line_name");
+					
+					// need to update follows_a with extra num seats available 
+					// find the seat number 
+					String getSeatNum = "SELECT f.num_seats_available " 
+								+ "FROM follows_a f "
+								+ "WHERE f.train_id=? "
+								+ "AND f.line_name=?";
+					PreparedStatement getSeatNumQuery = conn.prepareStatement(getSeatNum);
+					getSeatNumQuery.setString(1, train_num);
+					getSeatNumQuery.setString(2, transit_line);
+					ResultSet rs1 = getSeatNumQuery.executeQuery();
+					rs1.next();
+					int cur_seats_avail = rs1.getInt("f.num_seats_available");
+					int seats_avail = cur_seats_avail + 1;
+					// update num seats available with one less
+					String updateSeatsStr = "UPDATE follows_a "
+							+ "SET follows_a.num_seats_available=? "
+							+ "WHERE follows_a.train_id=? "
+							+ "AND follows_a.line_name=?";
+							
+					PreparedStatement updateSeatsQuery = conn.prepareStatement(updateSeatsStr);
+					updateSeatsQuery.setInt(1, seats_avail);
+					updateSeatsQuery.setString(2, train_num);
+					updateSeatsQuery.setString(3, transit_line);
+					updateSeatsQuery.executeUpdate();
+					updateSeatsQuery.close();
 					
 					
 					String reservationDeleteStr = "DELETE FROM reservation "
@@ -339,12 +385,6 @@
 			
 			
 
-			<br>
-			<label for="seat_num"> Seat Number:</label>
-			<input name="seat_num" id="seat_num" type="text" value="<% 
-				tmp = seat_num != null? seat_num:"";
-				out.print(tmp);
-			%>">
 			
 			<!-- this is the class drop down box -->
 			

@@ -27,6 +27,8 @@
 			String purchase_type = null;
 			String pt_val = null;
 			float total_fare = 0;
+			String avail_seats_str = null;
+			String total_seats_str = null;
 			
 			
 			try{
@@ -46,7 +48,7 @@
 				destination = request.getParameter("destination");
 				transit_line = request.getParameter("transit_line");
 				departure = request.getParameter("departure");
-				seat_num = request.getParameter("seat_num");
+				seat_num = null;
 				train_num = request.getParameter("train_num");
 				booking_fee_str = request.getParameter("booking_fee");
 				purchase_type = request.getParameter("purchase_type");
@@ -81,6 +83,39 @@
 				// calculate the total fare 
 				total_fare = train_fare + booking_fee;
 				
+				
+				// find the seat number 
+				String getSeatNum = "SELECT f.num_seats_available, t.num_of_seats " 
+							+ "FROM follows_a f, train t "
+							+ "WHERE f.train_id = t.train_id "
+							+ "AND f.train_id=? "
+							+ "AND f.line_name=?";
+				PreparedStatement getSeatNumQuery = conn.prepareStatement(getSeatNum);
+				getSeatNumQuery.setString(1, train_num);
+				getSeatNumQuery.setString(2, transit_line);
+				ResultSet rs1 = getSeatNumQuery.executeQuery();
+				
+				rs1.next();
+				avail_seats_str = rs1.getString("f.num_seats_available");
+				total_seats_str = rs1.getString("t.num_of_seats");
+				int avail_seats = Integer.parseInt(avail_seats_str);
+				int total_seats = Integer.parseInt(total_seats_str);
+				
+				int seat_number = total_seats - avail_seats + 1;
+				seat_num = "" + seat_number;
+				
+				// update num seats available with one less
+				String updateSeatsStr = "UPDATE follows_a "
+						+ "SET follows_a.num_seats_available=? "
+						+ "WHERE follows_a.train_id=? "
+						+ "AND follows_a.line_name=?";
+						
+				PreparedStatement updateSeatsQuery = conn.prepareStatement(updateSeatsStr);
+				updateSeatsQuery.setInt(1, avail_seats-1);
+				updateSeatsQuery.setString(2, train_num);
+				updateSeatsQuery.setString(3, transit_line);
+				updateSeatsQuery.executeUpdate();
+				updateSeatsQuery.close();
 				
 				//closing the connection
 				conn.close();

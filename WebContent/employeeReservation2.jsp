@@ -19,7 +19,6 @@
 			String destination = null;
 			String transit_line = null;
 			String departure = null;
-			String seat_num = null;
 			String seat_class = null;
 			String train_num = null;
 			String booking_fee = null;
@@ -44,7 +43,6 @@
 				destination = request.getParameter("destination");
 				transit_line = request.getParameter("transit_line");
 				departure = request.getParameter("rdeparture");
-				seat_num = request.getParameter("seat_num");
 				train_num = request.getParameter("train_num");
 				booking_fee = request.getParameter("booking_fee");
 				seat_class = request.getParameter("seat_class");
@@ -188,11 +186,6 @@
 			<input name="departure" id="departure" type="text" readonly = "readonly" value="<% out.print(departure); %>">
 			<br>
 			
-			<label for="seat_num"> Seat Number:</label>
-			<input name="seat_num" id="seat_num" type="text" readonly = "readonly" value="<% out.print(seat_num); %>">
-			
-			
-			<br>
 			<label for="seat_class"> Class:</label>
 			<%
 				if (seat_class.equals("first")){%>
