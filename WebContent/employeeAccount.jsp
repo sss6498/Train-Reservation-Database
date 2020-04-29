@@ -123,6 +123,16 @@
 		<br>
 		<br>
 		
+		<b><u>Reply to Customer Questions:</u></b>
+		<form method=post action=employeeAnswerQuestions.jsp>
+			<label for="answerQuestion"> Answer Customer Questions:  </label>
+			<input type="submit" value="Go!">
+		</form>
+		<%session.setAttribute("username", request.getParameter("username")); %>
+		
+		<br>
+		<br>
+		
 		<b><u>List of Train Schedules for Specific Origin & Destination</u></b>
 		<br>
 		
@@ -202,6 +212,7 @@
 		</form>
 		
 		<br>
+		<br>
 			
 		<b><u>List of Train Schedules for a Given Station</u></b>
 		<br>
@@ -244,17 +255,80 @@
 			<br>
 			<input type="submit" value="Execute Action!"> 
 			<br>
+		</form>
+		<br>
+		<br>
+		<b><u>List of all Customers with Reserved Seats</u></b>
+		<br>
+			<form method = 'post' action = employeeReservedSeats.jsp>
+			<label for="transit_line_name"> Train Line Name: </label>
+			<%
+			try {
+				//The url of our database
+				String url = "jdbc:mysql://mydb.cqqcfvqve8mb.us-east-2.rds.amazonaws.com:3306/cs336RailwayBookingSystem";
+				
+				Class.forName("com.mysql.jdbc.Driver");
+				
+				//Attempting to make a connection to database
+				Connection conn = DriverManager.getConnection(url, "group31", "database20");
+				
+				//getting the max res id of the reservations 
+				String getLineNames = "SELECT distinct * " 
+						+ "FROM train_schedule ";
+				PreparedStatement getLineNamesQuery = conn.prepareStatement(getLineNames);
+				ResultSet rs = getLineNamesQuery.executeQuery();
+				//parsing results for res id
+			%>
+				<select name = "transit_line_name" id = "transit_line_name">
+				<%  while(rs.next()){ %>
+						<option><%= rs.getString("line_name")%></option>
+				<% } %>
+			</select>
+			<% 
+			}
+			catch(Exception e){
+				request.setAttribute("status", e.getMessage());
+				RequestDispatcher rd = request.getRequestDispatcher("/employeeActionStatus.jsp");
+				rd.forward(request, response);
+			}
+			%>
+			<br>
+			<label for="train_num"> Train Number: </label>
+			<%
+			try {
+				//The url of our database
+				String url = "jdbc:mysql://mydb.cqqcfvqve8mb.us-east-2.rds.amazonaws.com:3306/cs336RailwayBookingSystem";
+				
+				Class.forName("com.mysql.jdbc.Driver");
+				
+				//Attempting to make a connection to database
+				Connection conn = DriverManager.getConnection(url, "group31", "database20");
+				
+				//getting the max res id of the reservations 
+				String getLineNames = "SELECT distinct train.train_id " 
+						+ "FROM train ";
+				PreparedStatement getLineNamesQuery = conn.prepareStatement(getLineNames);
+				ResultSet rs = getLineNamesQuery.executeQuery();
+				//parsing results for res id
+			%>
+				<select name = "train_num" id = "train_num">
+				<%  while(rs.next()){ %>
+						<option><%= rs.getString("train.train_id")%></option>
+				<% } %>
+			</select>
+			<% 
+			}
+			catch(Exception e){
+				request.setAttribute("status", e.getMessage());
+				RequestDispatcher rd = request.getRequestDispatcher("/employeeActionStatus.jsp");
+				rd.forward(request, response);
+			}
+			%>
+			
+			<br>
+			<input type="submit" value="Execute Action!"> 
 			<br>
 		</form>
-		
-		<form method=post action=employeeAnswerQuestions.jsp>
-			<label for="answerQuestion"> Answer Customer Questions: </label>
-			<input type="submit" value="Go!">
-		</form>
-		<%session.setAttribute("username", request.getParameter("username")); %>
 			
-			
-			 
-		
 	</body>
 </html>
