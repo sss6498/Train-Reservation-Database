@@ -81,7 +81,6 @@
 							+ "FROM made_for m, "
 							+ "reservation r "
 							+ "WHERE r.reservation_id=m.reservation_id "
-							+ "AND MONTH(r.date)=(MONTH(CURDATE())-1) "
 							+ "GROUP BY m.line_name "
 							+ "ORDER BY num DESC";
 					
