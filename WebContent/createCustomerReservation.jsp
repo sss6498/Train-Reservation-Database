@@ -84,9 +84,9 @@
 				}
 
 				if (seatClass.equalsIgnoreCase("Business"))
-					fare *= 2;
+					fare = String.valueOf(Integer.parseInt(fare) * 2);
 				else if (seatClass.equalsIgnoreCase("First"))
-					fare *= 3;
+					fare = String.valueOf(Integer.parseInt(fare) * 3);
 				
 				
 				if (fare.equals("")) {
