@@ -82,6 +82,11 @@
 				while(fareRS.next()) {
 					fare = fareRS.getString(1);
 				}
+
+				if (seatClass.equalsIgnoreCase("Business"))
+					fare *= 2;
+				else if (seatClass.equalsIgnoreCase("First"))
+					fare *= 3;
 				
 				
 				if (fare.equals("")) {
