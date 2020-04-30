@@ -52,7 +52,6 @@
 				String seats = "";
 				Time dTime = null;
 				Time aTime = null;
-				
 				while (lineRS.next()) {
 					line = lineRS.getString("line_name");
 					tID = lineRS.getString("train_id");
@@ -60,12 +59,35 @@
 					dTime = lineRS.getTime("departure_time");
 					aTime = lineRS.getTime("arrival_time");
 				}
-				
-				//out.println(line + "\n");
-				//out.println(dTime.toString() + " = " + departureTime + "\n");
-				//out.println(aTime.toString() + " = " + arrivalTime + "\n");
-				if (seats.equals("0"))
+
+				if (seats.equals("0") || seats.equals(null))
 					throw new Exception("There are no seats available on that train!");
+				
+				String getTrainFareStr = "SELECT x.amount "
+						+ "FROM fare x "
+						+ "WHERE (x.type = ? and x.line_name = ? and x.train_id = ?);";
+				
+				PreparedStatement getTrainFare = conn.prepareStatement(getTrainFareStr);
+				/*out.println("type: =" + totalFare + "= \t");
+				out.println(" line_name: =" + line + "= \t");
+				out.println(" train_id: =" + tID + "= \t");*/
+				getTrainFare.setString(1, totalFare);
+				getTrainFare.setString(2, line);
+				getTrainFare.setString(3, tID);
+				
+				ResultSet fareRS = getTrainFare.executeQuery();
+				
+				String fare = "";
+				
+				while(fareRS.next()) {
+					fare = fareRS.getString(1);
+					out.println(fare);
+				}
+				
+				
+				if (fare.equals("")) {
+					throw new Exception("That type of ticket is not offered on this line, please choose another.");
+				}
 				
 				if (line != "" && dTime.toString().equals(departureTime) && aTime.toString().equals(arrivalTime)) {
 					String resIDMakeStr = "SELECT MAX(r.reservation_id) "
@@ -124,7 +146,7 @@
 					PreparedStatement createResInfoQuery = conn.prepareStatement(createResInfoStr);
 					
 					createResInfoQuery.setString(1, newResID);
-					createResInfoQuery.setString(2, totalFare);
+					createResInfoQuery.setString(2, fare);
 					createResInfoQuery.setString(3, date);
 					createResInfoQuery.setString(4, seatClass);
 					createResInfoQuery.setString(5, sNum);

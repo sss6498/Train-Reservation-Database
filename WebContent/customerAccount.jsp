@@ -66,51 +66,121 @@
 	<br>
 	
 	<form action="createCustomerReservation.jsp">
-	Create a reservation:
-	<label for="origin">Origin:</label>
-	<select id="origin" name="origin">
-		<% 
-		try{
-			//The url of our databse
-			String url = "jdbc:mysql://mydb.cqqcfvqve8mb.us-east-2.rds.amazonaws.com:3306/cs336RailwayBookingSystem";
-			
-			Class.forName("com.mysql.jdbc.Driver");
-			
-			//Attempting to make a connection to database
-			Connection conn = DriverManager.getConnection(url, "group31", "database20");
-			
-			
-			String getStationsStr = "SELECT s.station_id, s.name "
-					+ "FROM station s;";
+		Create a reservation:
+		<label for="origin">Origin:</label>
+		<select id="origin" name="origin">
+			<% 
+			try{
+				//The url of our databse
+				String url = "jdbc:mysql://mydb.cqqcfvqve8mb.us-east-2.rds.amazonaws.com:3306/cs336RailwayBookingSystem";
+				
+				Class.forName("com.mysql.jdbc.Driver");
+				
+				//Attempting to make a connection to database
+				Connection conn = DriverManager.getConnection(url, "group31", "database20");
+				
+				
+				String getStationsStr = "SELECT s.station_id, s.name "
+						+ "FROM station s;";
 
-			
-			PreparedStatement getStationsQuery = conn.prepareStatement(getStationsStr);
-			
-			
-			ResultSet rs = getStationsQuery.executeQuery();
-			
-			//closing all objects
+				
+				PreparedStatement getStationsQuery = conn.prepareStatement(getStationsStr);
+				
+				
+				ResultSet rs = getStationsQuery.executeQuery();
+				
+				//closing all objects
 
-			
-			while(rs.next()){ 
-			String stat = rs.getString("station_id");
-			String name = rs.getString("name");
+				
+				while(rs.next()){ 
+				String stat = rs.getString("station_id");
+				String name = rs.getString("name");
+				%>
+				
+			    <option value=<%=stat%> id=<%=name%>><%=name%></option>
+			<%
+				}
+				
+				getStationsQuery.close();
+				conn.close();
+				
+				}catch(Exception e){
+					System.out.print(e.getMessage());
+					System.out.print("<br>");
+					System.out.print("Sorry, no stations could be found.");
+				}
 			%>
-			
-			<option value=<%=stat%> id=<%=name%>><%=name%></option>
-		<%
-			}
-			
-			getStationsQuery.close();
-			conn.close();
-			
-			}catch(Exception e){
-				System.out.print(e.getMessage());
-				System.out.print("<br>");
-				System.out.print("Sorry, no stations could be found.");
-			}
-		%>
-	</select>
+		</select>
+		
+		<label for="destination">Destination:</label>
+		<select id="destination" name="destination">
+			<% 
+			try{
+				//The url of our databse
+				String url = "jdbc:mysql://mydb.cqqcfvqve8mb.us-east-2.rds.amazonaws.com:3306/cs336RailwayBookingSystem";
+				
+				Class.forName("com.mysql.jdbc.Driver");
+				
+				//Attempting to make a connection to database
+				Connection conn = DriverManager.getConnection(url, "group31", "database20");
+				
+				
+				String getStationsStr = "SELECT s.station_id, s.name "
+						+ "FROM station s;";
+
+				
+				PreparedStatement getStationsQuery = conn.prepareStatement(getStationsStr);
+				
+				
+				ResultSet rs = getStationsQuery.executeQuery();
+				
+				//closing all objects
+
+				
+				while(rs.next()){ 
+				String stat = rs.getString("station_id");
+				String name = rs.getString("name");
+				%>
+				
+			    <option value=<%=stat%> id=<%=name%>><%=name%></option>
+			<%
+				}
+				
+				getStationsQuery.close();
+				conn.close();
+				
+				}catch(Exception e){
+					System.out.print(e.getMessage());
+					System.out.print("<br>");
+					System.out.print("Sorry, no stations could be found.");
+				}
+			%>
+		</select>
+		<label for="date">Date of Travel(yyyy-mm-dd):</label>
+		  <input type="text" id="date" name="date">
+		<label for="date">Time of departure (hh:mm):</label>
+		  <input type="text" id="departure_time" name="departure_time">
+		<label for="date">Time of arrival (hh:mm):</label>
+		  <input type="text" id="arrival_time" name="arrival_time">
+		<label for="total_fare">Type of ticket:</label>
+		<select id="total_fare" name="total_fare">
+			<option value="discounted_oneway">Discounted Oneway (Senior/Disabled)</option>
+			<option value="discounted_roundtrip">Discounted Roundtrip (Senior/Disabled)</option>
+			<option value="monthlypass">Monthly Pass</option>
+			<option value="standard_oneway">Standard Oneway</option>
+			<option value="standard_roundtrip">Standard Roundtrip</option>
+			<option value="weeklypass">Weekly Pass</option>
+		</select>
+		<label for="seatClass">Class of seat:</label>
+		<select id="seatClass" name="seatClass">
+			<option value="Economy">Economy</option>
+			<option value="Business">Business</option>
+			<option value="First">First</option>
+		</select>
+		<input type="hidden" id="username" name="username" value=<%=username%>>
+		<input type="submit" value="Submit">
+	</form>
+
 	
 	<label for="destination">Destination:</label>
 	<select id="destination" name="destination">
