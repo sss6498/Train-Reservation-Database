@@ -81,7 +81,6 @@
 				
 				while(fareRS.next()) {
 					fare = fareRS.getString(1);
-					out.println(fare);
 				}
 				
 				
@@ -124,7 +123,7 @@
 					String tNum = "";
 
 					if((totalSeats != "") && (seats != "")) {
-						sNum = Integer.toString(Integer.parseInt(totalSeats) - Integer.parseInt(seats));
+						sNum = Integer.toString(Integer.parseInt(totalSeats) - Integer.parseInt(seats) + 1);
 						tNum = Integer.toString(Integer.parseInt(seats) - 1);
 					}
 					
