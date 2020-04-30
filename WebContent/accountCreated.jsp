@@ -61,7 +61,8 @@
 				insertAccountInfoQuery.setString(3, custEmail);
 				insertAccountInfoQuery.setString(4, "");
 				insertAccountInfoQuery.executeUpdate();
-				out.println("Account is almost created, " + custFirstName + "!");
+				out.print("Account is almost created, " + custFirstName + "!<br><br>");
+				out.print("Finish creating your account by entering in the information below!");
 				
 				//putting variables in session
 				session.setAttribute("custEmail", custEmail);
