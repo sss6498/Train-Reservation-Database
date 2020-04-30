@@ -19,10 +19,10 @@
 		<!-- Login -->
 		<form method="post" action="account.jsp">
 			<label for="unameLogin"> Username: </label>
-			<input name="username" id="unameLogin" type="text">
+			<input name="username" id="unameLogin" maxlength="20" type="text">
 			<br>
 			<label for="passLogin"> Password: </label>
-			<input name="password" id="passLogin" type="text">
+			<input name="password" id="passLogin"  maxlength="20" type="text">
 			<br>
 			<input type="submit" value="Submit!">
 		</form>
@@ -34,11 +34,14 @@
 		
 		<!-- If no account setup, create one -->
 		<form method="post" action="accountCreated.jsp">
-			<label for="unameCreate"> Username: </label>
-			<input name="username" id="unameCreate" type="text">
+			<label for="firstNameCreate"> First Name: </label>
+			<input name="firstNameCreate" id="firstNameCreate" maxlength="30" type="text">
 			<br>
-			<label for="passCreate"> Password: </label>
-			<input name="password" id="passCreate" type="text">
+			<label for="lastNameCreate"> Last Name: </label>
+			<input name="lastNameCreate" id="lastNameCreate" maxlength="30" type="text">
+			<br>
+			<label for="emailCreate"> Email: </label>
+			<input name="emailCreate" id="emailCreate" maxlength="30" type="text">
 			<br>
 			<input type="submit" value="Create Account!">
 		</form>
