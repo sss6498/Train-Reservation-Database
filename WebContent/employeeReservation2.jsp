@@ -42,7 +42,6 @@
 				origin = request.getParameter("origin");
 				destination = request.getParameter("destination");
 				transit_line = request.getParameter("transit_line");
-				departure = request.getParameter("rdeparture");
 				train_num = request.getParameter("train_num");
 				booking_fee = request.getParameter("booking_fee");
 				seat_class = request.getParameter("seat_class");
@@ -144,6 +143,49 @@
 			%>
 			
 			<br>
+			
+			<!-- Need to add in departure time -->
+			
+			<!-- this is the departure time drop down box -->
+			
+			<label for="departure"> Departure:</label>
+			<%
+			try {
+				//The url of our database
+				String url = "jdbc:mysql://mydb.cqqcfvqve8mb.us-east-2.rds.amazonaws.com:3306/cs336RailwayBookingSystem";
+				
+				Class.forName("com.mysql.jdbc.Driver");
+				
+				//Attempting to make a connection to database
+				Connection conn = DriverManager.getConnection(url, "group31", "database20");
+				
+				//getting the max res id of the reservations 
+				String getMaxResID = "SELECT distinct f.departure_time " 
+						+ "FROM follows_a f "
+						+ "WHERE f.train_id=? "
+						+ "AND f.line_name=?";
+				PreparedStatement getQuery = conn.prepareStatement(getMaxResID);
+				getQuery.setString(1, train_num);
+				getQuery.setString(2, transit_line);
+				ResultSet rs = getQuery.executeQuery();
+				//parsing results for res id
+			%>
+				<select name = "departure_time" id = "departure_time">
+				<%  while(rs.next()){ %>
+						<option><%= rs.getString("f.departure_time")%></option>
+				<% } %>
+			</select>
+			<% 
+			}
+			catch(Exception e){
+				request.setAttribute("status", e.getMessage());
+				RequestDispatcher rd = request.getRequestDispatcher("/employeeActionStatus.jsp");
+				rd.forward(request, response);
+			}
+			%>
+			
+			
+			<br>
 			<br>
 		
 			<label for="reservation_id"> Reservation ID:</label>
@@ -180,10 +222,6 @@
 			
 			<label for="train_num"> Train Number:</label>
 			<input name="train_num" id="train_num" type="text" readonly = "readonly" value="<% out.print(train_num); %>">
-			<br>
-			
-			<label for="departure"> Departure:</label>
-			<input name="departure" id="departure" type="text" readonly = "readonly" value="<% out.print(departure); %>">
 			<br>
 			
 			<label for="seat_class"> Class:</label>
