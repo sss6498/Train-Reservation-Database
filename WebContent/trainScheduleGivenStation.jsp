@@ -13,6 +13,7 @@
 		<% 
 
 		String station = request.getParameter("station");
+		String origin_destination = request.getParameter("origin_destination");
 		String station_name = null;
 		String line_name = null;
 		String train_id = null;
@@ -20,7 +21,8 @@
 		String arrival_time = null;
 		String origin = null;
 		String destination = null;
-	
+		
+		
 		try{
 			//The url of our database
 			String url = "jdbc:mysql://mydb.cqqcfvqve8mb.us-east-2.rds.amazonaws.com:3306/cs336RailwayBookingSystem";
@@ -37,14 +39,6 @@
 			rs.next();
 			station_name = rs.getString("s.name");
 		
-			String getData = "SELECT s.name, f.line_name, f.train_id, f.departure_time, f.arrival_time " 
-					+ "FROM follows_a f, station s "
-					+ "WHERE f.origin_id = ? "
-					+ "AND f.destination_id = s.station_id";
-			PreparedStatement getDataQuery = conn.prepareStatement(getData);
-			getDataQuery.setString(1, station);
-			rs = getDataQuery.executeQuery();
-			
 			out.println("<br>");
 			
 			out.print("<TABLE BORDER=1>");
@@ -56,6 +50,16 @@
 			out.print("<TH>Departure Time</TH>");
 			out.print("<TH>Arrival Time</TH>");
 			out.print("</TR>");
+			
+		if (origin_destination.equals("origin")) {
+			
+			String getData = "SELECT s.name, f.line_name, f.train_id, f.departure_time, f.arrival_time " 
+					+ "FROM follows_a f, station s "
+					+ "WHERE f.origin_id = ? "
+					+ "AND f.destination_id = s.station_id";
+			PreparedStatement getDataQuery = conn.prepareStatement(getData);
+			getDataQuery.setString(1, station);
+			rs = getDataQuery.executeQuery();
 			
 			
 			while(rs.next() != false) {
@@ -82,6 +86,8 @@
 				out.print("<TD>" + arrival_time + "</TH>");
 				out.print("</TR>");
 			}
+			
+		} else {
 			
 			String getData2 = "SELECT s.name, f.line_name, f.train_id, f.departure_time, f.arrival_time " 
 					+ "FROM follows_a f, station s "
@@ -115,7 +121,7 @@
 				out.print("<TD>" + arrival_time + "</TH>");
 				out.print("</TR>");
 			}
-			
+		}
 			out.print("</TABLE>");
 			
 			rs.close();

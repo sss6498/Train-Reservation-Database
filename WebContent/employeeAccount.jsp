@@ -222,6 +222,12 @@
 		<br>
 		
 		<form method = 'post' action = trainScheduleGivenStation.jsp>
+			<label for="origin_destination"> Specify if Origin or Destination: </label>
+			<select name = "origin_destination" id = "origin_destinationn">
+				<option value="origin"> Origin </option>
+				<option value="destination"> Destination </option>
+			</select>
+			<br>
 			<label for="station"> Specify the Station: </label>
 			<%
 			try {
@@ -256,7 +262,6 @@
 				rd.forward(request, response);
 			}
 			%>
-			
 			<br>
 			<input type="submit" value="Execute Action!"> 
 			<br>
