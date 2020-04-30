@@ -19,7 +19,6 @@
 			String origin = null;
 			String destination = null;
 			String transit_line = null;
-			String departure = null;
 			String seat_class = null;
 			String train_num = null;
 			String booking_fee = null;
@@ -347,44 +346,6 @@
 				rd.forward(request, response);
 			}
 			%>
-			
-			<!-- this is the departure time drop down box -->
-			
-			<br>
-			<label for="departure"> Departure:</label>
-			<%
-			try {
-				//The url of our database
-				String url = "jdbc:mysql://mydb.cqqcfvqve8mb.us-east-2.rds.amazonaws.com:3306/cs336RailwayBookingSystem";
-				
-				Class.forName("com.mysql.jdbc.Driver");
-				
-				//Attempting to make a connection to database
-				Connection conn = DriverManager.getConnection(url, "group31", "database20");
-				
-				//getting the max res id of the reservations 
-				String getMaxResID = "SELECT distinct f.departure_time " 
-						+ "FROM follows_a f ";
-				PreparedStatement getMaxResIDQuery = conn.prepareStatement(getMaxResID);
-				ResultSet rs = getMaxResIDQuery.executeQuery();
-				//parsing results for res id
-			%>
-				<select name = "departure_time" id = "departure_time">
-				<%  while(rs.next()){ %>
-						<option><%= rs.getString("f.departure_time")%></option>
-				<% } %>
-			</select>
-			<% 
-			}
-			catch(Exception e){
-				request.setAttribute("status", e.getMessage());
-				RequestDispatcher rd = request.getRequestDispatcher("/employeeActionStatus.jsp");
-				rd.forward(request, response);
-			}
-			%>
-			
-			
-
 			
 			<!-- this is the class drop down box -->
 			
