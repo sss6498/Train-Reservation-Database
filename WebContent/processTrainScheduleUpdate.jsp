@@ -31,7 +31,7 @@
 			String arrival_hour = request.getParameter("arrival_hour");
 			String arrival_min = request.getParameter("arrival_min");
 			String fare = null;
-			String num_seats_available = request.getParameter("num_of_seats");
+			String num_seats_available = null;
 			String num_stops_str = request.getParameter("num_stops");
 	
 			try {
@@ -68,7 +68,17 @@
 				//Attempting to make a connection to database
 				Connection conn = DriverManager.getConnection(url, "group31", "database20");
 				
-
+				// retrieve the number of seats
+				String getNumSeats = "SELECT t.num_of_seats " 
+							+ "FROM train t "
+							+ "WHERE t.train_id = ?";
+				PreparedStatement getNumSeatsQuery = conn.prepareStatement(getNumSeats);
+				getNumSeatsQuery.setString(1, train);
+				ResultSet rs1 = getNumSeatsQuery.executeQuery();
+				rs1.next();
+				num_seats_available = rs1.getString("t.num_of_seats");
+				rs1.close();
+				
 				//updating reservation row
 				String updateFollowsAStr = "UPDATE follows_a f "
 						+ "SET f.departure_time=?, "
@@ -300,6 +310,7 @@
 				</select>
 				
 				<% 
+				conn.close();
 				} catch(Exception e){
 					request.setAttribute("status", e.getMessage());
 					RequestDispatcher rd = request.getRequestDispatcher("/employeeActionStatus.jsp");

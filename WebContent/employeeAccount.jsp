@@ -77,6 +77,7 @@
 				<% } %>
 			</select>
 			<% 
+			conn.close();
 			}
 			catch(Exception e){
 				request.setAttribute("status", e.getMessage());
@@ -109,6 +110,7 @@
 				<% } %>
 			</select>
 			<% 
+			conn.close();
 			}
 			catch(Exception e){
 				request.setAttribute("status", e.getMessage());
@@ -165,6 +167,7 @@
 				<% } %>
 			</select>
 			<% 
+			conn.close();
 			}
 			catch(Exception e){
 				request.setAttribute("status", e.getMessage());
@@ -199,6 +202,7 @@
 				<% } %>
 			</select>
 			<% 
+			conn.close();
 			}
 			catch(Exception e){
 				request.setAttribute("status", e.getMessage());
@@ -244,6 +248,7 @@
 				<% } %>
 			</select>
 			<% 
+			conn.close();
 			}
 			catch(Exception e){
 				request.setAttribute("status", e.getMessage());
@@ -285,6 +290,7 @@
 				<% } %>
 			</select>
 			<% 
+			conn.close();
 			}
 			catch(Exception e){
 				request.setAttribute("status", e.getMessage());
@@ -317,6 +323,7 @@
 				<% } %>
 			</select>
 			<% 
+			conn.close();
 			}
 			catch(Exception e){
 				request.setAttribute("status", e.getMessage());

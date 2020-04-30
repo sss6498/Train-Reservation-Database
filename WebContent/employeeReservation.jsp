@@ -339,6 +339,7 @@
 				<% } %>
 			</select>
 			<% 
+			conn.close();
 			}
 			catch(Exception e){
 				request.setAttribute("status", e.getMessage());
@@ -356,41 +357,6 @@
 				<option value="business"> Business </option>
 				<option value="first"> First </option>
 			</select>
-			
-			<!-- this is the train number drop down box -->
-			
-			<br>
-			<label for="train_num"> Train Number:</label>
-			<%
-			try {
-				//The url of our database
-				String url = "jdbc:mysql://mydb.cqqcfvqve8mb.us-east-2.rds.amazonaws.com:3306/cs336RailwayBookingSystem";
-				
-				Class.forName("com.mysql.jdbc.Driver");
-				
-				//Attempting to make a connection to database
-				Connection conn = DriverManager.getConnection(url, "group31", "database20");
-				
-				//getting the max res id of the reservations 
-				String getMaxResID = "SELECT distinct f.train_id " 
-						+ "FROM follows_a f ";
-				PreparedStatement getMaxResIDQuery = conn.prepareStatement(getMaxResID);
-				ResultSet rs = getMaxResIDQuery.executeQuery();
-				//parsing results for res id
-			%>
-				<select name = "train_num" id = "train_num">
-				<%  while(rs.next()){ %>
-						<option><%= rs.getString("f.train_id")%></option>
-				<% } %>
-			</select>
-			<% 
-			}
-			catch(Exception e){
-				request.setAttribute("status", e.getMessage());
-				RequestDispatcher rd = request.getRequestDispatcher("/employeeActionStatus.jsp");
-				rd.forward(request, response);
-			}
-			%>
 			
 			<br>
 			<br>

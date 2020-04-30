@@ -6,9 +6,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Employee Reservation editing 2 -- Group 31 Railway Booking</title>
+<title>Employee Reservation editing 2 extra -- Group 31 Railway Booking</title>
 </head>
 <body>
+
 
 <% 
 			String resID = null;
@@ -42,10 +43,23 @@
 				origin = request.getParameter("origin");
 				destination = request.getParameter("destination");
 				transit_line = request.getParameter("transit_line");
-				train_num = request.getParameter("train_num");
 				booking_fee = request.getParameter("booking_fee");
 				seat_class = request.getParameter("seat_class");
 				departure = request.getParameter("departure_time");
+				
+				
+				// need to get the train number using the departure time and transit line name 
+				String getTrain = "SELECT f.train_id " 
+							+ "FROM follows_a f "
+							+ "WHERE f.line_name=? "
+							+ "AND f.departure_time=? ";
+				PreparedStatement getTrainQuery = conn.prepareStatement(getTrain);
+				getTrainQuery.setString(1, transit_line);
+				getTrainQuery.setString(2, departure);
+				ResultSet rsTrain = getTrainQuery.executeQuery();
+				rsTrain.next();
+				train_num = rsTrain.getString("f.train_id");
+				
 				
 				//closing the connection
 				conn.close();
@@ -61,17 +75,15 @@
 
 
 
-		<b><u> Fill out Departure Time and press continue!</u></b>
+		<b><u> Fill out Purchase Type and press continue!</u></b>
 			
 		<br>
 		<br>
 		
-		<form method="post" action="employeeReservation2extra.jsp">
-			<!-- Need to add in departure time -->
-			
-			<!-- this is the departure time drop down box -->
-			
-			<label for="departure"> Departure:</label>
+		<form method="post" action="employeeReservation3.jsp">
+		
+		
+			<label for="purchase_type"> Purchase Type: </label>
 			<%
 			try {
 				//The url of our database
@@ -82,18 +94,57 @@
 				//Attempting to make a connection to database
 				Connection conn = DriverManager.getConnection(url, "group31", "database20");
 				
-				//getting the max res id of the reservations 
-				String getMaxResID = "SELECT distinct f.departure_time " 
-						+ "FROM follows_a f "
-						+ "WHERE f.line_name=? ";
-				PreparedStatement getQuery = conn.prepareStatement(getMaxResID);
-				getQuery.setString(1, transit_line);
-				ResultSet rs = getQuery.executeQuery();
-				//parsing results for res id
+				String getPurchaseTypes = "SELECT f.type " 
+						+ "FROM fare f "
+						+ "WHERE f.train_id=? "
+						+ "AND f.line_name=?";
+				PreparedStatement getPurchaseTypesQuery = conn.prepareStatement(getPurchaseTypes);
+				getPurchaseTypesQuery.setString(1, train_num);
+				getPurchaseTypesQuery.setString(2, transit_line);
+				ResultSet rs = getPurchaseTypesQuery.executeQuery();
 			%>
-				<select name = "departure_time" id = "departure_time">
+				<select name = "purchase_type" id = "purchase_type">
 				<%  while(rs.next()){ %>
-						<option><%= rs.getString("f.departure_time")%></option>
+					<%	
+						pt_val = rs.getString("f.type");
+						if (pt_val.equals("standard_oneway")){
+							if (pt_val.equals(purchase_type)){
+								out.print("<option selected value=" + pt_val + ">" + "Standard - One Way" + "</option>");
+							}else {
+								out.print("<option value=" + pt_val + ">" + "Standard - One Way" + "</option>");
+							}
+						}else if (pt_val.equals("standard_roundtrip")){
+							if (pt_val.equals(purchase_type)){
+								out.print("<option selected value=" + pt_val + ">" + "Standard - Round Trip" + "</option>");
+							}else {
+								out.print("<option value=" + pt_val + ">" + "Standard - Round Trip" + "</option>");
+							}
+						}else if (pt_val.equals("discounted_oneway")){
+							if (pt_val.equals(purchase_type)){
+								out.print("<option selected value=" + pt_val + ">" + "Discounted - One Way" + "</option>");
+							}else {
+								out.print("<option value=" + pt_val + ">" + "Discounted - One Way" + "</option>");
+							}
+						}else if (pt_val.equals("discounted_roundtrip")){
+							if (pt_val.equals(purchase_type)){
+								out.print("<option selected value=" + pt_val + ">" + "Discounted - Round Trip" + "</option>");
+							}else {
+								out.print("<option value=" + pt_val + ">" + "Discounted - Round Trip" + "</option>");
+							}
+						}else if (pt_val.equals("weeklypass")){
+							if (pt_val.equals(purchase_type)){
+								out.print("<option selected value=" + pt_val + ">" + "Weekly Pass" + "</option>");
+							}else {
+								out.print("<option value=" + pt_val + ">" + "Weekly Pass" + "</option>");
+							}
+						}else { // this is monthlypass
+							if (pt_val.equals(purchase_type)){
+								out.print("<option selected value=" + pt_val + ">" + "Monthly Pass" + "</option>");
+							}else {
+								out.print("<option value=" + pt_val + ">" + "Monthly Pass" + "</option>");
+							}
+						}	
+					%>
 				<% } %>
 			</select>
 			<% 
@@ -142,6 +193,13 @@
 			<input name="transit_line" id="transit_line" type="text" readonly = "readonly" value="<% out.print(transit_line); %>">
 			<br>
 			
+			<label for="train_id"> Transit Line:</label>
+			<input name="train_id" id="train_id" type="text" readonly = "readonly" value="<% out.print(train_num); %>">
+			<br>
+			
+			<label for="departure_time"> Departure Time:</label>
+			<input name="departure_time" id="departure_time" type="text" readonly = "readonly" value="<% out.print(departure); %>">
+			<br>
 			
 			<label for="seat_class"> Class:</label>
 			<%
@@ -160,6 +218,7 @@
 			<br>
 			<input type="submit" value="Continue!">
 		</form>
+
 
 </body>
 </html>

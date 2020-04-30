@@ -181,7 +181,7 @@
 					PreparedStatement getSeatNumQuery = conn.prepareStatement(getSeatNum);
 					getSeatNumQuery.setString(1, train);
 					ResultSet rs4 = getSeatNumQuery.executeQuery();
-					rs1.next();
+					rs4.next();
 					available_num_of_seats = rs4.getString("t.num_of_seats");
 					getSeatNumQuery.close();
 							
@@ -286,6 +286,7 @@
 				<% } %>
 			</select>
 			<% 
+			conn.close();
 			}
 			catch(Exception e){
 				request.setAttribute("status", e.getMessage());
@@ -329,6 +330,7 @@
 				<% } %>
 			</select>
 			<% 
+			conn.close();
 			}
 			catch(Exception e){
 				request.setAttribute("status", e.getMessage());

@@ -47,14 +47,15 @@
 				origin = request.getParameter("origin");
 				destination = request.getParameter("destination");
 				transit_line = request.getParameter("transit_line");
-				departure = request.getParameter("departure");
+				departure = request.getParameter("departure_time");
 				seat_num = null;
-				train_num = request.getParameter("train_num");
 				booking_fee_str = request.getParameter("booking_fee");
 				purchase_type = request.getParameter("purchase_type");
 				seat_class = request.getParameter("seat_class");
+				train_num = request.getParameter("train_id");
 				
 				float booking_fee = Float.parseFloat(booking_fee_str);
+				
 				
 				// get the train fare from db 
 				String getFare = "SELECT f.amount " 
