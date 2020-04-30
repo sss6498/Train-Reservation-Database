@@ -50,7 +50,7 @@
 						String firstName = bestCustomerRes.getString("name_first");
 						String lastName = bestCustomerRes.getString("name_last");
 						String money = bestCustomerRes.getString("money");
-						out.print("<li>" + firstName + " " + lastName + " generating $" + money + " of revenue</li>");
+						out.print("<li>" + firstName + " " + lastName + " generating $" + money + " of revenue.</li>");
 					}
 					
 					//closing everything used
@@ -81,7 +81,6 @@
 							+ "FROM made_for m, "
 							+ "reservation r "
 							+ "WHERE r.reservation_id=m.reservation_id "
-							+ "AND MONTH(r.date)=(MONTH(CURDATE())-1) "
 							+ "GROUP BY m.line_name "
 							+ "ORDER BY num DESC";
 					
@@ -93,7 +92,7 @@
 						if (topFiveTransitRes.next() != false){
 							String lineName = topFiveTransitRes.getString("line_name");
 							String numOfRes = topFiveTransitRes.getString("num");
-							out.print("<li>" + lineName + " with " + numOfRes + " reservations</li>");
+							out.print("<li>" + lineName + " with " + numOfRes + " reservations.</li>");
 						}else{
 							break;
 						}
