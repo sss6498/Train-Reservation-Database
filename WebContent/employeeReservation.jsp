@@ -49,6 +49,9 @@
 					//parsing results for res id
 					rs.next();
 					resID =  rs.getString("max(r.reservation_id)");
+					if (resID == null) {
+						resID = "0";
+					}
 					int resID_num = Integer.parseInt(resID) + 1;
 					// res id is our new reservation id 
 					resID = "" + resID_num;

@@ -193,7 +193,7 @@
 			<input name="transit_line" id="transit_line" type="text" readonly = "readonly" value="<% out.print(transit_line); %>">
 			<br>
 			
-			<label for="train_id"> Transit Line:</label>
+			<label for="train_id"> Train Number:</label>
 			<input name="train_id" id="train_id" type="text" readonly = "readonly" value="<% out.print(train_num); %>">
 			<br>
 			
