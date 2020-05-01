@@ -24,12 +24,11 @@ All your past and current train reservations are listed below
 				//Attempting to make a connection to database
 				Connection conn = DriverManager.getConnection(url, "group31", "database20");
 						
-				String resHistLookupStr = "SELECT r.reservation_id AS 'Reservation ID', r.class AS Class, r.seat_num AS 'Seat Number', z.type AS 'Ticket type', "
+				String resHistLookupStr = "SELECT r.reservation_id AS 'Reservation ID', r.class AS Class, r.seat_num AS 'Seat Number', "
 						+ "r.booking_fee AS 'Booking Fee', r.total_fare AS 'Fare', f.line_name AS 'Line', f.departure_time AS 'Departure Time', "
 						+ "f.arrival_time AS 'Arrival Time', s.name AS 'Departure Station', x.name AS 'Arrival Station' "
-						+ "FROM reservation r, follows_a f, made_for m, station s, station x, fare z "
-						+ "WHERE r.username = ? and r.reservation_id = m.reservation_id and m.train_id = f.train_id and m.line_name = f.line_name and s.station_id = f.origin_id and x.station_id = f.destination_id "
-						+ "and z.amount = r.total_fare and z.line_name = f.line_name and z.train_id = f.train_id;";
+						+ "FROM reservation r, follows_a f, made_for m, station s, station x "
+						+ "WHERE r.username = ? and r.reservation_id = m.reservation_id and m.train_id = f.train_id and m.line_name = f.line_name and s.station_id = f.origin_id and x.station_id = f.destination_id;";
 
 				PreparedStatement scheduleLookupQuery = conn.prepareStatement(resHistLookupStr);
 				

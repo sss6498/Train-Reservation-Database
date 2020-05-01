@@ -64,7 +64,7 @@
 			</ul>
 		
 		
-		<b><u> Top 5 Most Active Transit Lines of Last Month!</u></b>
+		<b><u> Top 5 Most Active Transit Lines in General!</u></b>
 		<!--  Logic needs to be inserted-->
 			<ul>
 			<% 
